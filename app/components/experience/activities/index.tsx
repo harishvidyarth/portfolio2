@@ -1,0 +1,53 @@
+import { ScrollControls } from "@react-three/drei";
+import { usePortalStore, useScrollStore } from "@stores";
+import { useEffect } from "react";
+import Timeline from "./Timeline";
+
+const Activities = () => {
+  const isActive = usePortalStore((state) => state.activePortalId === 'activities');
+  const { scrollProgress, setScrollProgress } = useScrollStore();
+
+  const handleScroll = (event: Event) => {
+    const target = event.target as HTMLElement;
+    const scrollTop = target.scrollTop;
+    const scrollHeight = target.scrollHeight - target.clientHeight;
+    const progress = Math.min(Math.max(scrollTop / scrollHeight, 0), 1);
+    setScrollProgress(progress);
+  }
+
+  useEffect(() => {
+    if (isActive) {
+      const scrollWrapper = document.querySelector('div[style*="z-index: -1"]') as HTMLElement;
+      const originalScrollWrapper = document.querySelector('div[style*="z-index: 1"]') as HTMLElement;
+      setScrollProgress(0);
+      scrollWrapper.addEventListener('scroll', handleScroll)
+      scrollWrapper.style.zIndex = '1';
+      originalScrollWrapper.style.zIndex = '-1';
+    } else {
+      const scrollWrapper = document.querySelector('div[style*="z-index: 1"]') as HTMLElement;
+      const originalScrollWrapper = document.querySelector('div[style*="z-index: -1"]') as HTMLElement;
+
+      if (scrollWrapper) {
+        scrollWrapper.scrollTo({ top: 0, behavior: 'smooth' });
+        setScrollProgress(0);
+        scrollWrapper.removeEventListener('scroll', handleScroll);
+        scrollWrapper.style.zIndex = '-1';
+        originalScrollWrapper.style.zIndex = '1';
+      }
+    }
+  }, [isActive]);
+
+  return (
+    <group>
+      <mesh receiveShadow>
+        <planeGeometry args={[4, 4, 1]} />
+        <shadowMaterial opacity={0.1} />
+      </mesh>
+      <ScrollControls style={{ zIndex: -1}} pages={2} maxSpeed={0.4}>
+        <Timeline progress={isActive ? scrollProgress : 0} />
+      </ScrollControls>
+    </group>
+  );
+};
+
+export default Activities;
