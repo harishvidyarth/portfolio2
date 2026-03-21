@@ -1,26 +1,37 @@
-# mohitvirli.github.io
-Hello there! I'm Mohit Virli, frontend engineer by profession, a creative at heart.
+# N. Harish Vidyarth - Portfolio
 
-This the updated version of my personal website which is now in 3D. LFG!
+Emerging Parallel Computing Researcher and Developer specializing in graph theory and cybersecurity.
 
-Checkout the live version at [mohitvirli.github.io](https://mohitvirli.github.io/)
+## About
+
+I am N. Harish Vidyarth, a B.E. CSE (Cyber Security) student at Rajalakshmi Engineering College, Chennai. My research focuses on graph-theoretic approaches to parallel computing, with a published SCI Q1 paper in Springer Nature.
 
 ## Tech Stack
 
 - Next.js
 - React
-- React-three-fiber
+- React-three-fiber (3D Graphics)
 - DREI
-- GSAP
-- Zustand
-- Tailwind
+- GSAP (Animations)
+- Zustand (State Management)
+- Tailwind CSS
+- Python
+- C
 
-## Preview
-Some of the sample images from the app. Better to check it out live!
+## Features
 
-<img width="1242" alt="image" src="https://github.com/user-attachments/assets/877b0685-8d86-4f8b-b123-f3cc17d46fc7" />
-<img width="1241" alt="image" src="https://github.com/user-attachments/assets/09a92647-1781-4124-ba3f-1d6fb66f6974" />
-<img width="1241" alt="image" src="https://github.com/user-attachments/assets/a15017f4-f1f2-459e-b895-b3c14703635b" />
-<img width="1428" height="830" alt="image" src="https://github.com/user-attachments/assets/9f78c2e8-991c-4507-8ffb-72e61513c031" />
+- 3D immersive portfolio experience
+- Interactive project showcase
+- Education & research timeline
+- Responsive design (Desktop & Mobile)
 
+## Connect
 
+- LinkedIn: [linkedin.com/in/harishvidyarth](https://www.linkedin.com/in/harishvidyarth/)
+- GitHub: [github.com/harishvidyarthcsecs](https://github.com/harishvidyarthcsecs)
+- Research: [SCI Q1 Paper on Springer Nature](https://doi.org/10.1038/s41598-025-29965-5)
+- Email: harishvidyarth@gmail.com
+
+## Live Site
+
+[harishvidyarth.github.io](https://harishvidyarth.github.io)

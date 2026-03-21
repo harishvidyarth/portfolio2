@@ -1,4 +1,3 @@
-import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import localFont from 'next/font/local';
 import "./globals.css";
@@ -14,12 +13,12 @@ const vercettiFont = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Mohit Virli ✌️",
-  description: "A frontend developer by profession, a creative at heart.",
-  keywords: "Mohit Virli, Frontend Engineer, React Developer, Three.js, Creative Developer, Web Development, Angular, JavaScript, TypeScript, Portfolio",
-  authors: [{ name: "Mohit Virli" }],
-  creator: "Mohit Virli",
-  publisher: "Mohit Virli",
+  title: "N. Harish Vidyarth - Parallel Computing Researcher & Developer",
+  description: "Emerging researcher specializing in graph theory and parallel computing. B.E. CSE Cyber Security student at Rajalakshmi Engineering College, Chennai.",
+  keywords: "N. Harish Vidyarth, Harish Vidyarth, Parallel Computing, Graph Theory, Cybersecurity, Cyber Security, Researcher, Developer, Rajalakshmi Engineering College, Chennai",
+  authors: [{ name: "N. Harish Vidyarth" }],
+  creator: "N. Harish Vidyarth",
+  publisher: "N. Harish Vidyarth",
   formatDetection: {
     email: false,
     address: false,
@@ -36,20 +35,17 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Mohit Virli - Frontend Engineer",
-    description: "Frontend engineer by profession, creative at heart.",
-    url: "https://mohitvirli.github.io",
-    siteName: "Mohit Virli's Portfolio",
+    title: "N. Harish Vidyarth - Parallel Computing Researcher",
+    description: "Emerging researcher specializing in graph theory and parallel computing.",
+    url: "https://harishvidyarth.github.io",
+    siteName: "N. Harish Vidyarth's Portfolio",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mohit Virli - Frontend Engineer",
-    description: "Frontend engineer by profession, creative at heart.",
-  },
-  verification: {
-    google: "GsRYY-ivL0F_VKkfs5KAeToliqz0gCrRAJKKmFkAxBA",
+    title: "N. Harish Vidyarth - Parallel Computing Researcher",
+    description: "Emerging researcher specializing in graph theory and parallel computing.",
   },
 };
 
@@ -72,7 +68,6 @@ export default function RootLayout({
       >
         {children}
       </body>
-      <GoogleAnalytics gaId={'G-7WD4HM3XRE'}/>
     </html>
   );
 }
