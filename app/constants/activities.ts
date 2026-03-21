@@ -1,33 +1,38 @@
 import * as THREE from "three";
 import { WorkTimelinePoint } from "../types";
 
-export const ACTIVITIES_TIMELINE: WorkTimelinePoint[] = [
+export const KARATE_TIMELINE: WorkTimelinePoint[] = [
   {
-    point: new THREE.Vector3(0, 0, 0),
+    point: new THREE.Vector3(-3, 0, 0),
     year: '2023',
     title: '2nd Dan Black Belt',
-    subtitle: 'Shotokan Karate under Master D. Nirmal Kumar',
+    subtitle: 'Shotokan Karate',
+    position: 'left',
+  },
+  {
+    point: new THREE.Vector3(-6, -3, -2),
+    year: '2024',
+    title: 'WKF Judge B',
+    subtitle: 'World Karate Federation',
+    position: 'left',
+  },
+];
+
+export const MUSIC_TIMELINE: WorkTimelinePoint[] = [
+  {
+    point: new THREE.Vector3(3, 0, 0),
+    year: '2023',
+    title: 'Guitar & Music',
+    subtitle: 'Keys, Composition',
     position: 'right',
   },
   {
-    point: new THREE.Vector3(-4, -4, -3),
+    point: new THREE.Vector3(6, -3, -2),
     year: '2024',
-    title: 'WKF Judge B Certified',
-    subtitle: 'World Karate Federation Approved Official',
-    position: 'left',
+    title: 'Band Culturals',
+    subtitle: 'Stage Performer',
+    position: 'right',
   },
-  {
-    point: new THREE.Vector3(-3, -1, -6),
-    year: '2023',
-    title: 'Guitar & Music',
-    subtitle: 'Composition, Ear Training, Keys',
-    position: 'left',
-  },
-  {
-    point: new THREE.Vector3(0, -1, -10),
-    year: '2024',
-    title: 'Music Production',
-    subtitle: 'Rhythm, Harmony, Improvisation',
-    position: 'left',
-  },
-]
+];
+
+export const ACTIVITIES_TIMELINE = [...KARATE_TIMELINE, ...MUSIC_TIMELINE];
