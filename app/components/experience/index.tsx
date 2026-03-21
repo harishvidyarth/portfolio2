@@ -74,7 +74,7 @@ const Experience = () => {
           </GridTile>
         </group>
 
-        <group position={[isMobile ? 1 : 2.5, -1, 0]}>
+        <group position={[isMobile ? 1 : 2.5, 0, 0]}>
           <Activities/>
         </group>
       </group>
