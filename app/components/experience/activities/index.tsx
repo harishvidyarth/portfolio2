@@ -143,16 +143,16 @@ const Activities = () => {
     }
   }, [isActive, camera, data]);
 
-  useFrame((state, delta) => {
+  useFrame((frameState, delta) => {
     if (isActive && !isMobile) {
       camera.rotation.y = THREE.MathUtils.lerp(
         camera.rotation.y,
-        -(state.pointer.x * Math.PI) / 10,
+        -(frameState.pointer.x * Math.PI) / 10,
         0.02
       );
       camera.position.z = THREE.MathUtils.damp(
         camera.position.z,
-        11.5 - state.pointer.y,
+        11.5 - frameState.pointer.y,
         7,
         delta
       );
