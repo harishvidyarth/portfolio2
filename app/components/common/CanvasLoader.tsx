@@ -12,7 +12,6 @@ import { useThemeStore } from "@stores";
 import Preloader from "./Preloader";
 import ProgressLoader from "./ProgressLoader";
 import { ScrollHint } from "./ScrollHint";
-import ThemeSwitcher from "./ThemeSwitcher";
 
 const CanvasLoader = (props: { children: React.ReactNode }) => {
   const ref= useRef<HTMLDivElement>(null);
@@ -87,7 +86,6 @@ const CanvasLoader = (props: { children: React.ReactNode }) => {
         </Canvas>
         <ProgressLoader progress={progress} />
       </div>
-      <ThemeSwitcher />
       <ScrollHint />
     </div>
   );
