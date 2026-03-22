@@ -1,65 +1,64 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { Text, useScroll, Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import dynamic from 'next/dynamic';
 import gsap from "gsap";
-import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
-import { KarateModel } from "../../models/KarateModel";
-import { PianoModel } from "../../models/PianoModel";
 
-const KarateSection = ({ isActive }: { isActive: boolean }) => {
+const LOTTIE_CARD = '/lottie/card.json';
+
+const LottieCard = ({ side, isHovered }: { side: 'left' | 'right'; isHovered: boolean }) => {
   const groupRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState(false);
   
   useEffect(() => {
     if (!groupRef.current) return;
-    gsap.to(groupRef.current.position, {
-      x: isActive ? -1.2 : -3,
-      duration: 0.6,
-    });
     gsap.to(groupRef.current.scale, {
-      x: isActive ? 1 : 0,
-      y: isActive ? 1 : 0,
-      z: isActive ? 1 : 0,
-      duration: 0.6,
+      x: isHovered ? 1 : 0,
+      y: isHovered ? 1 : 0,
+      z: isHovered ? 1 : 0,
+      duration: 0.4,
     });
-  }, [isActive]);
+  }, [isHovered]);
+
+  const xPos = side === 'left' ? -2.5 : 2.5;
+  const label = side === 'left' ? 'KARATE' : 'MUSIC';
+  const subtitle = side === 'left' ? '2ND DAN BLACK BELT' : 'KEYS. STAGE. VIBES';
 
   return (
-    <group ref={groupRef} position={[-3, 0, 0]} scale={[0, 0, 0]}
-      onPointerOver={() => { if (isActive) { setHovered(true); document.body.style.cursor = 'pointer'; }}}
-      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
-    >
-      <group scale={0.006} rotation={[0, Math.PI / 4, 0]} position={[0, -0.3, 0]}>
-        <KarateModel />
-      </group>
-      <Html position={[0, 0.5, 0]} center transform distanceFactor={3}>
-        <div style={{ textAlign: 'center', pointerEvents: 'none' }}>
-          <div style={{ 
-            fontSize: '14px', 
-            color: hovered ? '#fff' : '#ccc',
+    <group ref={groupRef} position={[xPos, 0, 0]} scale={[0, 0, 0]}>
+      <Html position={[0, 0.8, 0]} center transform distanceFactor={4}>
+        <div style={{
+          background: 'rgba(15, 15, 35, 0.9)',
+          borderRadius: '12px',
+          padding: '15px',
+          width: '140px',
+          textAlign: 'center',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+        }}>
+          <div style={{
+            width: '100px',
+            height: '100px',
+            margin: '0 auto 10px',
+          }}>
+            <PlayerCard src={LOTTIE_CARD} />
+          </div>
+          <div style={{
+            fontSize: '14px',
+            color: '#fff',
             fontFamily: 'soria-font',
             marginBottom: '4px',
-            transition: 'color 0.3s'
           }}>
-            KARATE
+            {label}
           </div>
-          <div style={{ 
-            fontSize: '9px', 
+          <div style={{
+            fontSize: '9px',
             color: '#888',
-            marginBottom: '2px'
           }}>
-            2ND DAN BLACK BELT
-          </div>
-          <div style={{ 
-            fontSize: '7px', 
-            color: '#666'
-          }}>
-            WKF JUDGE B
+            {subtitle}
           </div>
         </div>
       </Html>
@@ -67,71 +66,13 @@ const KarateSection = ({ isActive }: { isActive: boolean }) => {
   );
 };
 
-const MusicSection = ({ isActive }: { isActive: boolean }) => {
-  const groupRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState(false);
-  
-  useEffect(() => {
-    if (!groupRef.current) return;
-    gsap.to(groupRef.current.position, {
-      x: isActive ? 1.2 : 3,
-      duration: 0.6,
-      delay: 0.1,
-    });
-    gsap.to(groupRef.current.scale, {
-      x: isActive ? 1 : 0,
-      y: isActive ? 1 : 0,
-      z: isActive ? 1 : 0,
-      duration: 0.6,
-      delay: 0.1,
-    });
-  }, [isActive]);
-
-  return (
-    <group ref={groupRef} position={[3, 0, 0]} scale={[0, 0, 0]}
-      onPointerOver={() => { if (isActive) { setHovered(true); document.body.style.cursor = 'pointer'; }}}
-      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
-    >
-      <group scale={0.0025} rotation={[0, -Math.PI / 6, 0]} position={[0, -0.3, 0]}>
-        <PianoModel />
-      </group>
-      <Html position={[0, 0.5, 0]} center transform distanceFactor={3}>
-        <div style={{ textAlign: 'center', pointerEvents: 'none' }}>
-          <div style={{ 
-            fontSize: '14px', 
-            color: hovered ? '#fff' : '#ccc',
-            fontFamily: 'soria-font',
-            marginBottom: '4px',
-            transition: 'color 0.3s'
-          }}>
-            MUSIC
-          </div>
-          <div style={{ 
-            fontSize: '9px', 
-            color: '#888',
-            marginBottom: '2px'
-          }}>
-            KEYS. STAGE. VIBES
-          </div>
-          <div style={{ 
-            fontSize: '7px', 
-            color: '#666'
-          }}>
-            BAND PERFORMER
-          </div>
-        </div>
-      </Html>
-    </group>
-  );
-};
-
-const LottieBackground = dynamic(() => import('./LottieBackground'), { ssr: false });
+const PlayerCard = dynamic(() => import('./PlayerCard'), { ssr: false });
 
 const Activities = () => {
   const { camera } = useThree();
   const isActive = usePortalStore((state) => state.activePortalId === "activities");
   const data = useScroll();
-  const titleRef = useRef<THREE.Group>(null);
+  const [hoveredSide, setHoveredSide] = useState<'left' | 'right' | null>(null);
 
   useEffect(() => {
     data.el.style.overflow = isActive ? 'hidden' : 'auto';
@@ -141,19 +82,6 @@ const Activities = () => {
       } else {
         gsap.to(camera.position, { y: -39, x: 0, duration: 1 });
       }
-    }
-  }, [isActive]);
-
-  useEffect(() => {
-    if (titleRef.current) {
-      gsap.to(titleRef.current.position, {
-        y: isActive ? 0.7 : 1.2,
-        duration: 0.5,
-      });
-      gsap.to(titleRef.current, {
-        fillOpacity: isActive ? 1 : 0,
-        duration: 0.5,
-      });
     }
   }, [isActive]);
 
@@ -173,27 +101,73 @@ const Activities = () => {
         <shadowMaterial opacity={0.1} />
       </mesh>
       
-      <LottieBackground isActive={isActive} />
+      <mesh position={[0, 0, -2]} scale={[12, 12, 1]}>
+        <planeGeometry args={[1, 1]} />
+        <meshBasicMaterial color="#0a0a0f" />
+      </mesh>
       
-      <group scale={new THREE.Vector3(1.5, 1.5, 1.5)} position={[0, -1.5, -1]}>
+      <group 
+        scale={new THREE.Vector3(1.5, 1.5, 1.5)} 
+        position={[0, -1.5, -1]}
+        onPointerOver={() => setHoveredSide(null)}
+        onPointerOut={() => setHoveredSide(null)}
+      >
         <SpaceBoi />
       </group>
       
-      <group ref={titleRef} position={[0, 1.2, 0]}>
+      <group 
+        position={[-1.5, 0, 0]}
+        onPointerOver={() => setHoveredSide('left')}
+        onPointerOut={() => setHoveredSide(null)}
+      >
+        <mesh position={[0, 0, 0.1]}>
+          <planeGeometry args={[1.5, 2]} />
+          <meshBasicMaterial color="#0f0f1a" transparent opacity={hoveredSide === 'left' ? 0.3 : 0} />
+        </mesh>
         <Text
           font="./soria-font.ttf"
-          fontSize={0.2}
-          color="white"
+          fontSize={0.12}
+          color={hoveredSide === 'left' ? "#fff" : "#555"}
           anchorX="center"
           anchorY="middle"
-          fillOpacity={0}
         >
-          EXTRA CURRICULAR
+          KARATE
         </Text>
       </group>
       
-      <KarateSection isActive={isActive} />
-      <MusicSection isActive={isActive} />
+      <group 
+        position={[1.5, 0, 0]}
+        onPointerOver={() => setHoveredSide('right')}
+        onPointerOut={() => setHoveredSide(null)}
+      >
+        <mesh position={[0, 0, 0.1]}>
+          <planeGeometry args={[1.5, 2]} />
+          <meshBasicMaterial color="#0f0f1a" transparent opacity={hoveredSide === 'right' ? 0.3 : 0} />
+        </mesh>
+        <Text
+          font="./soria-font.ttf"
+          fontSize={0.12}
+          color={hoveredSide === 'right' ? "#fff" : "#555"}
+          anchorX="center"
+          anchorY="middle"
+        >
+          MUSIC
+        </Text>
+      </group>
+      
+      <LottieCard side="left" isHovered={hoveredSide === 'left'} />
+      <LottieCard side="right" isHovered={hoveredSide === 'right'} />
+      
+      <Text
+        font="./soria-font.ttf"
+        fontSize={0.2}
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+        position={[0, 0.7, 0]}
+      >
+        EXTRA CURRICULAR
+      </Text>
     </group>
   );
 };
