@@ -134,9 +134,9 @@ const Activities = () => {
     }
     if (isActive) {
       if (isMobile) {
-        gsap.to(camera.position, { z: 11.5, y: -39, x: 2, duration: 1 });
+        gsap.to(camera.position, { z: 11.5, y: -39, x: 4, duration: 1 });
       } else {
-        gsap.to(camera.position, { y: -39, x: 2, z: 11.5, duration: 1 });
+        gsap.to(camera.position, { y: -39, x: 4, z: 11.5, duration: 1 });
       }
     }
   }, [isActive, camera, data]);
