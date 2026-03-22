@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import { Text, useScroll } from "@react-three/drei";
+import { Text, useScroll, Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
+import dynamic from 'next/dynamic';
 import gsap from "gsap";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
@@ -17,53 +18,51 @@ const KarateSection = ({ isActive }: { isActive: boolean }) => {
   useEffect(() => {
     if (!groupRef.current) return;
     gsap.to(groupRef.current.position, {
-      x: isActive ? 0 : -2,
-      duration: 0.5,
+      x: isActive ? -1.2 : -3,
+      duration: 0.6,
     });
     gsap.to(groupRef.current.scale, {
       x: isActive ? 1 : 0,
       y: isActive ? 1 : 0,
       z: isActive ? 1 : 0,
-      duration: 0.5,
+      duration: 0.6,
     });
   }, [isActive]);
 
   return (
-    <group ref={groupRef} position={[-2, 0, 0]} scale={[0, 0, 0]}
+    <group ref={groupRef} position={[-3, 0, 0]} scale={[0, 0, 0]}
       onPointerOver={() => { if (isActive) { setHovered(true); document.body.style.cursor = 'pointer'; }}}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
     >
-      <group scale={0.008} rotation={[0, Math.PI / 4, 0]} position={[0, -0.5, 0]}>
+      <group scale={0.006} rotation={[0, Math.PI / 4, 0]} position={[0, -0.3, 0]}>
         <KarateModel />
       </group>
-      <group position={[0, 0.4, 0]}>
-        <Text
-          font="./soria-font.ttf"
-          fontSize={0.15}
-          color={hovered ? "#fff" : "#ccc"}
-          anchorX="center"
-        >
-          KARATE
-        </Text>
-        <Text
-          font="./soria-font.ttf"
-          fontSize={0.08}
-          color="#888"
-          anchorX="center"
-          position={[0, -0.2, 0]}
-        >
-          2ND DAN BLACK BELT
-        </Text>
-        <Text
-          font="./Vercetti-Regular.woff"
-          fontSize={0.05}
-          color="#666"
-          anchorX="center"
-          position={[0, -0.35, 0]}
-        >
-          WKF JUDGE B
-        </Text>
-      </group>
+      <Html position={[0, 0.5, 0]} center transform distanceFactor={3}>
+        <div style={{ textAlign: 'center', pointerEvents: 'none' }}>
+          <div style={{ 
+            fontSize: '14px', 
+            color: hovered ? '#fff' : '#ccc',
+            fontFamily: 'soria-font',
+            marginBottom: '4px',
+            transition: 'color 0.3s'
+          }}>
+            KARATE
+          </div>
+          <div style={{ 
+            fontSize: '9px', 
+            color: '#888',
+            marginBottom: '2px'
+          }}>
+            2ND DAN BLACK BELT
+          </div>
+          <div style={{ 
+            fontSize: '7px', 
+            color: '#666'
+          }}>
+            WKF JUDGE B
+          </div>
+        </div>
+      </Html>
     </group>
   );
 };
@@ -75,77 +74,58 @@ const MusicSection = ({ isActive }: { isActive: boolean }) => {
   useEffect(() => {
     if (!groupRef.current) return;
     gsap.to(groupRef.current.position, {
-      x: isActive ? 0 : 2,
-      duration: 0.5,
+      x: isActive ? 1.2 : 3,
+      duration: 0.6,
       delay: 0.1,
     });
     gsap.to(groupRef.current.scale, {
       x: isActive ? 1 : 0,
       y: isActive ? 1 : 0,
       z: isActive ? 1 : 0,
-      duration: 0.5,
+      duration: 0.6,
       delay: 0.1,
     });
   }, [isActive]);
 
   return (
-    <group ref={groupRef} position={[2, 0, 0]} scale={[0, 0, 0]}
+    <group ref={groupRef} position={[3, 0, 0]} scale={[0, 0, 0]}
       onPointerOver={() => { if (isActive) { setHovered(true); document.body.style.cursor = 'pointer'; }}}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
     >
-      <group scale={0.003} rotation={[0, -Math.PI / 6, 0]} position={[0, -0.5, 0]}>
+      <group scale={0.0025} rotation={[0, -Math.PI / 6, 0]} position={[0, -0.3, 0]}>
         <PianoModel />
       </group>
-      <group position={[0, 0.4, 0]}>
-        <Text
-          font="./soria-font.ttf"
-          fontSize={0.15}
-          color={hovered ? "#fff" : "#ccc"}
-          anchorX="center"
-        >
-          MUSIC
-        </Text>
-        <Text
-          font="./soria-font.ttf"
-          fontSize={0.08}
-          color="#888"
-          anchorX="center"
-          position={[0, -0.2, 0]}
-        >
-          KEYS. STAGE. VIBES
-        </Text>
-        <Text
-          font="./Vercetti-Regular.woff"
-          fontSize={0.05}
-          color="#666"
-          anchorX="center"
-          position={[0, -0.35, 0]}
-        >
-          BAND PERFORMER
-        </Text>
-      </group>
+      <Html position={[0, 0.5, 0]} center transform distanceFactor={3}>
+        <div style={{ textAlign: 'center', pointerEvents: 'none' }}>
+          <div style={{ 
+            fontSize: '14px', 
+            color: hovered ? '#fff' : '#ccc',
+            fontFamily: 'soria-font',
+            marginBottom: '4px',
+            transition: 'color 0.3s'
+          }}>
+            MUSIC
+          </div>
+          <div style={{ 
+            fontSize: '9px', 
+            color: '#888',
+            marginBottom: '2px'
+          }}>
+            KEYS. STAGE. VIBES
+          </div>
+          <div style={{ 
+            fontSize: '7px', 
+            color: '#666'
+          }}>
+            BAND PERFORMER
+          </div>
+        </div>
+      </Html>
     </group>
   );
 };
 
-const VideoBackground = ({ isActive }: { isActive: boolean }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useEffect(() => {
-    if (!meshRef.current) return;
-    gsap.to(meshRef.current.material, {
-      opacity: isActive ? 0.3 : 0,
-      duration: 0.5,
-    });
-  }, [isActive]);
-
-  return (
-    <mesh ref={meshRef} position={[0, 0, -2]} scale={[8, 8, 1]}>
-      <planeGeometry args={[1, 1]} />
-      <meshBasicMaterial color="#1a1a2e" transparent opacity={0} />
-    </mesh>
-  );
-};
+const LottieBackground = dynamic(() => import('./LottieBackground'), { ssr: false });
 
 const Activities = () => {
   const { camera } = useThree();
@@ -167,7 +147,7 @@ const Activities = () => {
   useEffect(() => {
     if (titleRef.current) {
       gsap.to(titleRef.current.position, {
-        y: isActive ? 0.6 : 1,
+        y: isActive ? 0.7 : 1.2,
         duration: 0.5,
       });
       gsap.to(titleRef.current, {
@@ -180,7 +160,7 @@ const Activities = () => {
   useFrame((state, delta) => {
     if (isActive) {
       if (!isMobile) {
-        camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -(state.pointer.x * Math.PI) / 8, 0.02);
+        camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -(state.pointer.x * Math.PI) / 10, 0.02);
         camera.position.z = THREE.MathUtils.damp(camera.position.z, 11.5 - state.pointer.y, 7, delta);
       }
     }
@@ -193,13 +173,13 @@ const Activities = () => {
         <shadowMaterial opacity={0.1} />
       </mesh>
       
-      <VideoBackground isActive={isActive} />
+      <LottieBackground isActive={isActive} />
       
-      <group scale={new THREE.Vector3(1.5, 1.5, 1.5)} position={[0, -2, -1]}>
+      <group scale={new THREE.Vector3(1.5, 1.5, 1.5)} position={[0, -1.5, -1]}>
         <SpaceBoi />
       </group>
       
-      <group ref={titleRef} position={[0, 1, 0]}>
+      <group ref={titleRef} position={[0, 1.2, 0]}>
         <Text
           font="./soria-font.ttf"
           fontSize={0.2}
