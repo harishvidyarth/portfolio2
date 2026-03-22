@@ -173,7 +173,7 @@ const Activities = () => {
 
       <group
         scale={new THREE.Vector3(1.5, 1.5, 1.5)}
-        position={[0, -3.5, 0]}
+        position={[0, -4, 0]}
       >
         <SpaceBoi />
       </group>
