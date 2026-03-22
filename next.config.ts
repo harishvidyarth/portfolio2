@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   // skip strict mode
   reactStrictMode: false,
+  output: 'export',
   env: {
     googleAnalyticsId: process.env.NODE_ENV === "production" ? process.env.GA_MEASUREMENT_ID : "",
   }
