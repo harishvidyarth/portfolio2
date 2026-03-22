@@ -26,38 +26,43 @@ const GlassCard = ({
 
   useEffect(() => {
     if (!groupRef.current) return;
-    gsap.to(groupRef.current.scale, {
-      x: isActive ? 1 : 0,
-      y: isActive ? 1 : 0,
-      z: isActive ? 1 : 0,
-      duration: 0.5,
-      delay: isActive ? 0.3 : 0,
-    });
+    groupRef.current.scale.set(
+      isActive ? 1 : 0,
+      isActive ? 1 : 0,
+      isActive ? 1 : 0
+    );
   }, [isActive]);
 
   useEffect(() => {
     if (!groupRef.current) return;
-    gsap.to(groupRef.current.scale, {
-      x: hovered ? 1.07 : 1,
-      y: hovered ? 1.07 : 1,
-      z: hovered ? 1.07 : 1,
-      duration: 0.25,
-    });
+    groupRef.current.scale.set(
+      hovered ? 1.07 : 1,
+      hovered ? 1.07 : 1,
+      hovered ? 1.07 : 1
+    );
   }, [hovered]);
+
+  const handlePointerOver = () => {
+    setHovered(true);
+    if (typeof document !== 'undefined') {
+      document.body.style.cursor = 'pointer';
+    }
+  };
+
+  const handlePointerOut = () => {
+    setHovered(false);
+    if (typeof document !== 'undefined') {
+      document.body.style.cursor = 'auto';
+    }
+  };
 
   return (
     <group 
       ref={groupRef} 
       position={[xPos, 0, 0]} 
       scale={[0, 0, 0]}
-      onPointerOver={() => { 
-        setHovered(true); 
-        document.body.style.cursor = 'pointer'; 
-      }}
-      onPointerOut={() => { 
-        setHovered(false);
-        document.body.style.cursor = 'auto'; 
-      }}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
     >
       <mesh>
         <planeGeometry args={[1.4, 2.0]} />
@@ -67,7 +72,6 @@ const GlassCard = ({
           opacity={0.08}
           roughness={0.05}
           metalness={0.1}
-          envMapIntensity={1}
         />
       </mesh>
 
@@ -81,19 +85,21 @@ const GlassCard = ({
         <meshBasicMaterial color="#ffffff" transparent opacity={0.12} />
       </mesh>
 
-      <Html position={[0, 0.35, 0.02]} center transform distanceFactor={3}>
-        <div style={{
-          width: '110px',
-          height: '110px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          opacity: hovered ? 1 : 0.5,
-          transition: 'opacity 0.3s ease',
-        }}>
-          <PlayerCard src={LOTTIE_CARD} />
-        </div>
-      </Html>
+      {isActive && (
+        <Html position={[0, 0.35, 0.02]} center transform distanceFactor={3}>
+          <div style={{
+            width: '110px',
+            height: '110px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: hovered ? 1 : 0.5,
+            transition: 'opacity 0.3s ease',
+          }}>
+            <PlayerCard src={LOTTIE_CARD} />
+          </div>
+        </Html>
+      )}
 
       <Text
         font="./soria-font.ttf"
@@ -137,7 +143,7 @@ const Activities = () => {
         gsap.to(camera.position, { y: -39, x: 0, duration: 1 });
       }
     }
-  }, [isActive, camera, data]);
+  }, [isActive]);
 
   useFrame((state, delta) => {
     if (isActive && !isMobile) {
