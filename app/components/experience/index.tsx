@@ -72,10 +72,13 @@ const Experience = () => {
             position={new THREE.Vector3(isMobile ? 1 : 0, 0, 0)}>
             <Projects/>
           </GridTile>
-        </group>
-
-        <group position={[isMobile ? 1 : 2.5, 0, 0]}>
-          <Activities/>
+          <GridTile title='EXTRA CURRICULAR'
+            id="activities"
+            color='#c4d9e8'
+            textAlign='right'
+            position={new THREE.Vector3(isMobile ? 1 : 2.5, 0, isMobile ? 0.4 : 0)}>
+            <Activities/>
+          </GridTile>
         </group>
       </group>
     </group>

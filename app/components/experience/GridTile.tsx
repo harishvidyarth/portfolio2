@@ -31,7 +31,6 @@ const GridTile = (props: GridTileProps) => {
   const data = useScroll();
 
   useEffect(() => {
-    // Hanlde the hover box and title animation for mobile.
     if (isMobile && titleRef.current) {
       const isWork = id === 'work';
       gsap.to(titleRef.current, {
@@ -41,7 +40,7 @@ const GridTile = (props: GridTileProps) => {
         letterSpacing: 0.4,
       });
       gsap.to(titleRef.current.position, {
-        x: isWork ? 1: -1,
+        x: isWork ? 1 : -1,
         y: isWork ? -1.7 : 1.5,
         duration: 0.5,
       });
