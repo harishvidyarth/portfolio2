@@ -10,69 +10,101 @@ import { SpaceBoi } from "../../models/SpaceBoi";
 
 const LOTTIE_CARD = '/lottie/card.json';
 
-const LottieCard = ({ side, isHovered }: { side: 'left' | 'right'; isHovered: boolean }) => {
+const PlayerCard = dynamic(() => import('./PlayerCard'), { ssr: false });
+
+const GlassCard = ({ 
+  side, 
+  isActive, 
+  onClick 
+}: { 
+  side: 'left' | 'right'; 
+  isActive: boolean;
+  onClick: () => void;
+}) => {
   const groupRef = useRef<THREE.Group>(null);
+  const xPos = side === 'left' ? -1.8 : 1.8;
+  const label = side === 'left' ? 'KARATE' : 'MUSIC';
+  const subtitle = side === 'left' ? '2ND DAN BLACK BELT' : 'KEYS. STAGE. VIBES';
   
   useEffect(() => {
     if (!groupRef.current) return;
     gsap.to(groupRef.current.scale, {
-      x: isHovered ? 1 : 0,
-      y: isHovered ? 1 : 0,
-      z: isHovered ? 1 : 0,
-      duration: 0.4,
+      x: isActive ? 1 : 0,
+      y: isActive ? 1 : 0,
+      z: isActive ? 1 : 0,
+      duration: 0.5,
     });
-  }, [isHovered]);
-
-  const xPos = side === 'left' ? -2.5 : 2.5;
-  const label = side === 'left' ? 'KARATE' : 'MUSIC';
-  const subtitle = side === 'left' ? '2ND DAN BLACK BELT' : 'KEYS. STAGE. VIBES';
+  }, [isActive]);
 
   return (
-    <group ref={groupRef} position={[xPos, 0, 0]} scale={[0, 0, 0]}>
-      <Html position={[0, 0.8, 0]} center transform distanceFactor={4}>
+    <group 
+      ref={groupRef} 
+      position={[xPos, 0, 0]} 
+      scale={[0, 0, 0]}
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      onPointerOver={() => { if (isActive) document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { document.body.style.cursor = 'auto'; }}
+    >
+      <mesh>
+        <planeGeometry args={[1.2, 1.8]} />
+        <meshPhysicalMaterial 
+          color="#ffffff" 
+          transparent 
+          opacity={0.15} 
+          roughness={0.1}
+          metalness={0.1}
+        />
+      </mesh>
+      <mesh position={[0, 0, 0.01]}>
+        <planeGeometry args={[1.15, 1.75]} />
+        <meshBasicMaterial color="#000" transparent opacity={0.3} />
+      </mesh>
+      
+      <Html position={[0, 0.5, 0.02]} center transform distanceFactor={3}>
         <div style={{
-          background: 'rgba(15, 15, 35, 0.9)',
-          borderRadius: '12px',
-          padding: '15px',
-          width: '140px',
-          textAlign: 'center',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+          width: '100px',
+          height: '80px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}>
-          <div style={{
-            width: '100px',
-            height: '100px',
-            margin: '0 auto 10px',
-          }}>
-            <PlayerCard src={LOTTIE_CARD} />
-          </div>
-          <div style={{
-            fontSize: '14px',
-            color: '#fff',
-            fontFamily: 'soria-font',
-            marginBottom: '4px',
-          }}>
-            {label}
-          </div>
-          <div style={{
-            fontSize: '9px',
-            color: '#888',
-          }}>
-            {subtitle}
-          </div>
+          <PlayerCard src={LOTTIE_CARD} />
         </div>
       </Html>
+      
+      <Text
+        font="./soria-font.ttf"
+        fontSize={0.1}
+        color="#fff"
+        anchorX="center"
+        anchorY="middle"
+        position={[0, -0.6, 0.02]}
+      >
+        {label}
+      </Text>
+      <Text
+        font="./Vercetti-Regular.woff"
+        fontSize={0.05}
+        color="#aaa"
+        anchorX="center"
+        anchorY="middle"
+        position={[0, -0.8, 0.02]}
+      >
+        {subtitle}
+      </Text>
     </group>
   );
 };
-
-const PlayerCard = dynamic(() => import('./PlayerCard'), { ssr: false });
 
 const Activities = () => {
   const { camera } = useThree();
   const isActive = usePortalStore((state) => state.activePortalId === "activities");
   const data = useScroll();
-  const [hoveredSide, setHoveredSide] = useState<'left' | 'right' | null>(null);
+  const [selectedCard, setSelectedCard] = useState<'left' | 'right' | null>(null);
+
+  useEffect(() => {
+    if (!isActive) setSelectedCard(null);
+  }, [isActive]);
 
   useEffect(() => {
     data.el.style.overflow = isActive ? 'hidden' : 'auto';
@@ -106,57 +138,16 @@ const Activities = () => {
         <meshBasicMaterial color="#0a0a0f" />
       </mesh>
       
-      <group 
-        scale={new THREE.Vector3(1.5, 1.5, 1.5)} 
-        position={[0, -1.5, -1]}
-        onPointerOver={() => setHoveredSide(null)}
-        onPointerOut={() => setHoveredSide(null)}
-      >
+      <group scale={new THREE.Vector3(1.5, 1.5, 1.5)} position={[0, -4, -1]}>
         <SpaceBoi />
       </group>
       
-      <group 
-        position={[-1.5, 0, 0]}
-        onPointerOver={() => setHoveredSide('left')}
-        onPointerOut={() => setHoveredSide(null)}
-      >
-        <mesh position={[0, 0, 0.1]}>
-          <planeGeometry args={[1.5, 2]} />
-          <meshBasicMaterial color="#0f0f1a" transparent opacity={hoveredSide === 'left' ? 0.3 : 0} />
-        </mesh>
-        <Text
-          font="./soria-font.ttf"
-          fontSize={0.12}
-          color={hoveredSide === 'left' ? "#fff" : "#555"}
-          anchorX="center"
-          anchorY="middle"
-        >
-          KARATE
-        </Text>
-      </group>
-      
-      <group 
-        position={[1.5, 0, 0]}
-        onPointerOver={() => setHoveredSide('right')}
-        onPointerOut={() => setHoveredSide(null)}
-      >
-        <mesh position={[0, 0, 0.1]}>
-          <planeGeometry args={[1.5, 2]} />
-          <meshBasicMaterial color="#0f0f1a" transparent opacity={hoveredSide === 'right' ? 0.3 : 0} />
-        </mesh>
-        <Text
-          font="./soria-font.ttf"
-          fontSize={0.12}
-          color={hoveredSide === 'right' ? "#fff" : "#555"}
-          anchorX="center"
-          anchorY="middle"
-        >
-          MUSIC
-        </Text>
-      </group>
-      
-      <LottieCard side="left" isHovered={hoveredSide === 'left'} />
-      <LottieCard side="right" isHovered={hoveredSide === 'right'} />
+      {isActive && (
+        <>
+          <GlassCard side="left" isActive={isActive} onClick={() => setSelectedCard(selectedCard === 'left' ? null : 'left')} />
+          <GlassCard side="right" isActive={isActive} onClick={() => setSelectedCard(selectedCard === 'right' ? null : 'right')} />
+        </>
+      )}
       
       <Text
         font="./soria-font.ttf"
