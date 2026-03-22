@@ -126,7 +126,7 @@ const Activities = () => {
   const data = useScroll();
 
   useEffect(() => {
-    if (data?.el) {
+    if (data?.el && data.el.style) {
       data.el.style.overflow = isActive ? 'hidden' : 'auto';
     }
 
