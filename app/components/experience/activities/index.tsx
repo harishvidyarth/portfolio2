@@ -9,23 +9,21 @@ import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
 
 const LOTTIE_CARD = '/lottie/card.json';
-
 const PlayerCard = dynamic(() => import('./PlayerCard'), { ssr: false });
 
 const GlassCard = ({ 
   side, 
-  isActive, 
-  onClick 
+  isActive,
 }: { 
   side: 'left' | 'right'; 
   isActive: boolean;
-  onClick: () => void;
 }) => {
   const groupRef = useRef<THREE.Group>(null);
-  const xPos = side === 'left' ? -1.8 : 1.8;
+  const [hovered, setHovered] = useState(false);
+  const xPos = side === 'left' ? -2.2 : 2.2;
   const label = side === 'left' ? 'KARATE' : 'MUSIC';
   const subtitle = side === 'left' ? '2ND DAN BLACK BELT' : 'KEYS. STAGE. VIBES';
-  
+
   useEffect(() => {
     if (!groupRef.current) return;
     gsap.to(groupRef.current.scale, {
@@ -33,62 +31,88 @@ const GlassCard = ({
       y: isActive ? 1 : 0,
       z: isActive ? 1 : 0,
       duration: 0.5,
+      delay: isActive ? 0.3 : 0,
     });
   }, [isActive]);
+
+  useEffect(() => {
+    if (!groupRef.current) return;
+    gsap.to(groupRef.current.scale, {
+      x: hovered ? 1.07 : 1,
+      y: hovered ? 1.07 : 1,
+      z: hovered ? 1.07 : 1,
+      duration: 0.25,
+    });
+  }, [hovered]);
 
   return (
     <group 
       ref={groupRef} 
       position={[xPos, 0, 0]} 
       scale={[0, 0, 0]}
-      onClick={(e) => { e.stopPropagation(); onClick(); }}
-      onPointerOver={() => { if (isActive) document.body.style.cursor = 'pointer'; }}
-      onPointerOut={() => { document.body.style.cursor = 'auto'; }}
+      onPointerOver={() => { 
+        setHovered(true); 
+        document.body.style.cursor = 'pointer'; 
+      }}
+      onPointerOut={() => { 
+        setHovered(false);
+        document.body.style.cursor = 'auto'; 
+      }}
     >
       <mesh>
-        <planeGeometry args={[1.2, 1.8]} />
+        <planeGeometry args={[1.4, 2.0]} />
         <meshPhysicalMaterial 
           color="#ffffff" 
           transparent 
-          opacity={0.15} 
-          roughness={0.1}
+          opacity={0.08}
+          roughness={0.05}
           metalness={0.1}
+          envMapIntensity={1}
         />
       </mesh>
+
       <mesh position={[0, 0, 0.01]}>
-        <planeGeometry args={[1.15, 1.75]} />
-        <meshBasicMaterial color="#000" transparent opacity={0.3} />
+        <planeGeometry args={[1.35, 1.95]} />
+        <meshBasicMaterial color="#050510" transparent opacity={0.45} />
       </mesh>
-      
-      <Html position={[0, 0.5, 0.02]} center transform distanceFactor={3}>
+
+      <mesh position={[0, 0, -0.01]}>
+        <planeGeometry args={[1.42, 2.02]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.12} />
+      </mesh>
+
+      <Html position={[0, 0.35, 0.02]} center transform distanceFactor={3}>
         <div style={{
-          width: '100px',
-          height: '80px',
+          width: '110px',
+          height: '110px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          opacity: hovered ? 1 : 0.5,
+          transition: 'opacity 0.3s ease',
         }}>
           <PlayerCard src={LOTTIE_CARD} />
         </div>
       </Html>
-      
+
       <Text
         font="./soria-font.ttf"
-        fontSize={0.1}
-        color="#fff"
+        fontSize={0.12}
+        color="#ffffff"
         anchorX="center"
         anchorY="middle"
-        position={[0, -0.6, 0.02]}
+        position={[0, -0.65, 0.02]}
       >
         {label}
       </Text>
+
       <Text
         font="./Vercetti-Regular.woff"
-        fontSize={0.05}
-        color="#aaa"
+        fontSize={0.055}
+        color="#aaaaaa"
         anchorX="center"
         anchorY="middle"
-        position={[0, -0.8, 0.02]}
+        position={[0, -0.85, 0.02]}
       >
         {subtitle}
       </Text>
@@ -100,29 +124,34 @@ const Activities = () => {
   const { camera } = useThree();
   const isActive = usePortalStore((state) => state.activePortalId === "activities");
   const data = useScroll();
-  const [selectedCard, setSelectedCard] = useState<'left' | 'right' | null>(null);
 
   useEffect(() => {
-    if (!isActive) setSelectedCard(null);
-  }, [isActive]);
+    if (data?.el) {
+      data.el.style.overflow = isActive ? 'hidden' : 'auto';
+    }
 
-  useEffect(() => {
-    data.el.style.overflow = isActive ? 'hidden' : 'auto';
     if (isActive) {
       if (isMobile) {
-        gsap.to(camera.position, { z: 11.5, y: -39, x: 1, duration: 1 });
+        gsap.to(camera.position, { z: 11.5, y: -39, x: 0, duration: 1 });
       } else {
         gsap.to(camera.position, { y: -39, x: 0, duration: 1 });
       }
     }
-  }, [isActive]);
+  }, [isActive, camera, data]);
 
   useFrame((state, delta) => {
-    if (isActive) {
-      if (!isMobile) {
-        camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -(state.pointer.x * Math.PI) / 10, 0.02);
-        camera.position.z = THREE.MathUtils.damp(camera.position.z, 11.5 - state.pointer.y, 7, delta);
-      }
+    if (isActive && !isMobile) {
+      camera.rotation.y = THREE.MathUtils.lerp(
+        camera.rotation.y,
+        -(state.pointer.x * Math.PI) / 10,
+        0.02
+      );
+      camera.position.z = THREE.MathUtils.damp(
+        camera.position.z,
+        11.5 - state.pointer.y,
+        7,
+        delta
+      );
     }
   });
 
@@ -132,30 +161,33 @@ const Activities = () => {
         <planeGeometry args={[4, 4, 1]} />
         <shadowMaterial opacity={0.1} />
       </mesh>
-      
-      <mesh position={[0, 0, -2]} scale={[12, 12, 1]}>
+
+      <mesh position={[0, 0, -3]} scale={[30, 20, 1]}>
         <planeGeometry args={[1, 1]} />
         <meshBasicMaterial color="#0a0a0f" />
       </mesh>
-      
-      <group scale={new THREE.Vector3(1.5, 1.5, 1.5)} position={[0, -4, -1]}>
+
+      <group 
+        scale={new THREE.Vector3(1.5, 1.5, 1.5)} 
+        position={[0, -3.5, 0]}
+      >
         <SpaceBoi />
       </group>
-      
+
       {isActive && (
         <>
-          <GlassCard side="left" isActive={isActive} onClick={() => setSelectedCard(selectedCard === 'left' ? null : 'left')} />
-          <GlassCard side="right" isActive={isActive} onClick={() => setSelectedCard(selectedCard === 'right' ? null : 'right')} />
+          <GlassCard side="left" isActive={isActive} />
+          <GlassCard side="right" isActive={isActive} />
         </>
       )}
-      
+
       <Text
         font="./soria-font.ttf"
         fontSize={0.2}
         color="white"
         anchorX="center"
         anchorY="middle"
-        position={[0, 0.7, 0]}
+        position={[0, 1.1, 0]}
       >
         EXTRA CURRICULAR
       </Text>
