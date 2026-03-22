@@ -189,7 +189,7 @@ const Activities = () => {
         color="white"
         anchorX="center"
         anchorY="middle"
-        position={[0, 1.8, 0.5]}
+        position={[0, 2.3, 0.5]}
       >
         EXTRA CURRICULAR
       </Text>
