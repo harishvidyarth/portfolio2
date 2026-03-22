@@ -8,7 +8,9 @@ import * as THREE from "three";
 import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
 
-const LOTTIE_CARD = '/lottie/card.json';
+const LOTTIE_KARATE = '/lottie/karate.json';
+const LOTTIE_MUSIC = '/lottie/music.json';
+
 const PlayerCard = dynamic(() => import('./PlayerCard'), { ssr: false });
 
 const GlassCard = ({ 
@@ -23,83 +25,78 @@ const GlassCard = ({
   const xPos = side === 'left' ? -2.2 : 2.2;
   const label = side === 'left' ? 'KARATE' : 'MUSIC';
   const subtitle = side === 'left' ? '2ND DAN BLACK BELT' : 'KEYS. STAGE. VIBES';
+  const lottieSrc = side === 'left' ? LOTTIE_KARATE : LOTTIE_MUSIC;
 
   useEffect(() => {
     if (!groupRef.current) return;
-    groupRef.current.scale.set(
-      isActive ? 1 : 0,
-      isActive ? 1 : 0,
-      isActive ? 1 : 0
-    );
+    gsap.to(groupRef.current.scale, {
+      x: isActive ? 1 : 0,
+      y: isActive ? 1 : 0,
+      z: isActive ? 1 : 0,
+      duration: 0.5,
+      delay: isActive ? (side === 'left' ? 0.2 : 0.35) : 0,
+    });
   }, [isActive]);
 
   useEffect(() => {
-    if (!groupRef.current) return;
-    groupRef.current.scale.set(
-      hovered ? 1.07 : 1,
-      hovered ? 1.07 : 1,
-      hovered ? 1.07 : 1
-    );
-  }, [hovered]);
-
-  const handlePointerOver = () => {
-    setHovered(true);
-    if (typeof document !== 'undefined') {
-      document.body.style.cursor = 'pointer';
-    }
-  };
-
-  const handlePointerOut = () => {
-    setHovered(false);
-    if (typeof document !== 'undefined') {
-      document.body.style.cursor = 'auto';
-    }
-  };
+    if (!groupRef.current || !isActive) return;
+    gsap.to(groupRef.current.scale, {
+      x: hovered ? 1.07 : 1,
+      y: hovered ? 1.07 : 1,
+      z: hovered ? 1.07 : 1,
+      duration: 0.2,
+    });
+  }, [hovered, isActive]);
 
   return (
-    <group 
-      ref={groupRef} 
-      position={[xPos, 0, 0]} 
+    <group
+      ref={groupRef}
+      position={[xPos, 0, 0.1]}
       scale={[0, 0, 0]}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
+      onPointerOver={() => {
+        setHovered(true);
+        document.body.style.cursor = 'pointer';
+      }}
+      onPointerOut={() => {
+        setHovered(false);
+        document.body.style.cursor = 'auto';
+      }}
     >
+      <mesh position={[0, 0, -0.01]}>
+        <planeGeometry args={[1.42, 2.02]} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.1} />
+      </mesh>
+
       <mesh>
         <planeGeometry args={[1.4, 2.0]} />
-        <meshPhysicalMaterial 
-          color="#ffffff" 
-          transparent 
-          opacity={0.08}
+        <meshPhysicalMaterial
+          color="#ffffff"
+          transparent
+          opacity={0.07}
           roughness={0.05}
-          metalness={0.1}
+          metalness={0.15}
         />
       </mesh>
 
       <mesh position={[0, 0, 0.01]}>
         <planeGeometry args={[1.35, 1.95]} />
-        <meshBasicMaterial color="#050510" transparent opacity={0.45} />
+        <meshBasicMaterial color="#050510" transparent opacity={0.5} />
       </mesh>
 
-      <mesh position={[0, 0, -0.01]}>
-        <planeGeometry args={[1.42, 2.02]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.12} />
-      </mesh>
-
-      {isActive && (
-        <Html position={[0, 0.35, 0.02]} center transform distanceFactor={3}>
-          <div style={{
-            width: '110px',
-            height: '110px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            opacity: hovered ? 1 : 0.5,
-            transition: 'opacity 0.3s ease',
-          }}>
-            <PlayerCard src={LOTTIE_CARD} />
-          </div>
-        </Html>
-      )}
+      <Html position={[0, 0.35, 0.02]} center transform distanceFactor={3}>
+        <div style={{
+          width: '110px',
+          height: '110px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          opacity: hovered ? 1 : 0.4,
+          transition: 'opacity 0.3s ease',
+          pointerEvents: 'none',
+        }}>
+          <PlayerCard src={lottieSrc} />
+        </div>
+      </Html>
 
       <Text
         font="./soria-font.ttf"
@@ -132,18 +129,17 @@ const Activities = () => {
   const data = useScroll();
 
   useEffect(() => {
-    if (data?.el && data.el.style) {
+    if (data?.el) {
       data.el.style.overflow = isActive ? 'hidden' : 'auto';
     }
-
     if (isActive) {
       if (isMobile) {
         gsap.to(camera.position, { z: 11.5, y: -39, x: 0, duration: 1 });
       } else {
-        gsap.to(camera.position, { y: -39, x: 0, duration: 1 });
+        gsap.to(camera.position, { y: -39, x: 0, z: 11.5, duration: 1 });
       }
     }
-  }, [isActive]);
+  }, [isActive, camera, data]);
 
   useFrame((state, delta) => {
     if (isActive && !isMobile) {
@@ -168,13 +164,13 @@ const Activities = () => {
         <shadowMaterial opacity={0.1} />
       </mesh>
 
-      <mesh position={[0, 0, -3]} scale={[30, 20, 1]}>
+      <mesh position={[0, 0, -4]} scale={[40, 25, 1]}>
         <planeGeometry args={[1, 1]} />
         <meshBasicMaterial color="#0a0a0f" />
       </mesh>
 
-      <group 
-        scale={new THREE.Vector3(1.5, 1.5, 1.5)} 
+      <group
+        scale={new THREE.Vector3(1.5, 1.5, 1.5)}
         position={[0, -3.5, 0]}
       >
         <SpaceBoi />
@@ -193,7 +189,7 @@ const Activities = () => {
         color="white"
         anchorX="center"
         anchorY="middle"
-        position={[0, 1.1, 0]}
+        position={[0, 1.1, 0.5]}
       >
         EXTRA CURRICULAR
       </Text>
