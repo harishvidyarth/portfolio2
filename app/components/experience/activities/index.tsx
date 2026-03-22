@@ -53,11 +53,13 @@ const GlassCard = ({
       ref={groupRef}
       position={[xPos, 0, 0.1]}
       scale={[0, 0, 0]}
-      onPointerOver={() => {
+      onPointerOver={(e) => {
+        e.stopPropagation();
         setHovered(true);
         document.body.style.cursor = 'pointer';
       }}
-      onPointerOut={() => {
+      onPointerOut={(e) => {
+        e.stopPropagation();
         setHovered(false);
         document.body.style.cursor = 'auto';
       }}
