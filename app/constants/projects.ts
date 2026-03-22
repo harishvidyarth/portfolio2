@@ -5,7 +5,7 @@ export const PROJECTS: Project[] = [
     title: 'Proelium Academy',
     date: 'Dec 2025',
     subtext: 'Full-Stack Web Application for martial arts training. Live at proeliumacademy.in with Django backend and modern frontend.',
-    url: 'https://github.com/harishvidyarthcsecs/proelium_academy',
+    url: 'https://proeliumacademy.in',
   },
   {
     title: 'System Hardener',
@@ -24,15 +24,6 @@ export const PROJECTS: Project[] = [
     date: 'Dec 2024',
     subtext: 'Autism support mobile application built with Flutter. Accessibility-focused design for special needs.',
     url: 'https://github.com/harishvidyarthcsecs/icpc_companion',
-  },
-  {
-    title: 'Graph Network Analyzer',
-    date: '2025',
-    subtext: 'Research tool for analyzing processor network topologies using graph-theoretic parameters for parallel computing.',
-    urls: [
-      { text: 'Paper', url: 'https://doi.org/10.1038/s41598-025-29965-5' },
-      { text: 'GitHub', url: '#' }
-    ]
   },
   {
     title: 'Portfolio',

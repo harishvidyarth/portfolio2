@@ -23,6 +23,6 @@ export const FOOTER_LINKS: FooterLink[] = [
     name: 'Research',
     hoverText: 'View my paper',
     icon: 'icons/research.svg',
-    url: 'https://doi.org/10.1038/s41598-025-29965-5',
+    url: 'https://scholar.google.com/citations?user=xl8mbhAAAAAJ&hl=en&oi=sra',
   },
 ];
