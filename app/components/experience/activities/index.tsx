@@ -213,6 +213,7 @@ const Activities = () => {
     if (!isActive) return;
 
     if (isMobile) {
+      camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, 0, 0.05);
       camera.rotation.y = THREE.MathUtils.lerp(
         camera.rotation.y,
         -(touchPointer.current.x * Math.PI) / 10,
@@ -225,6 +226,7 @@ const Activities = () => {
         delta
       );
     } else {
+      camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, 0, 0.05);
       camera.rotation.y = THREE.MathUtils.lerp(
         camera.rotation.y,
         -(state.pointer.x * Math.PI) / 10,
