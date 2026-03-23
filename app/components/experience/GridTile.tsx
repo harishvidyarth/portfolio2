@@ -36,16 +36,16 @@ const GridTile = (props: GridTileProps) => {
       const yPos = 1.2;
       
       if (id === 'work') {
-        xPos = -1.2;
+        xPos = -0.8;
       } else if (id === 'projects') {
         xPos = 0;
       } else {
-        xPos = 1.2;
+        xPos = 0.8;
       }
 
       gsap.to(titleRef.current, {
         fontSize: 0.13,
-        maxWidth: 3,
+        maxWidth: 2.5,
         color: '#FFF',
         letterSpacing: 0.3,
       });
@@ -178,11 +178,11 @@ const GridTile = (props: GridTileProps) => {
 
     let points: number[][];
     if (id === 'work') {
-      points = [[-2, 1, 0], [-2, -1, 0], [2, -1, 0]];
+      points = [[-1.5, 1.5, 0], [-1.5, -1.5, 0], [1.5, -1.5, 0]];
     } else if (id === 'projects') {
-      points = [[-2, 1, 0], [0, -1, 0], [2, 1, 0]];
+      points = [[-1.5, 1.5, 0], [0, -1.5, 0], [1.5, 1.5, 0]];
     } else {
-      points = [[-2, -1, 0], [2, -1, 0], [2, 1, 0]];
+      points = [[-1.5, -1.5, 0], [1.5, -1.5, 0], [1.5, 1.5, 0]];
     }
 
     return <primitive object={TriangleGeometry({ points })} attach="geometry" />
