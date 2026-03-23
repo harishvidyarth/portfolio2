@@ -23,7 +23,7 @@ const GlassCard = ({
 }) => {
   const groupRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
-  const xPos = side === 'left' ? -2.2 : 2.2;
+  const xPos = side === 'left' ? (isMobile ? -1.2 : -2.2) : (isMobile ? 1.2 : 2.2);
   const label = side === 'left' ? 'KARATE' : 'MUSIC';
   const subtitle = side === 'left' ? '2ND DAN BLACK BELT' : 'KEYS. STAGE. VIBES';
   const lottieSrc = side === 'left' ? LOTTIE_KARATE : LOTTIE_MUSIC;
@@ -49,6 +49,9 @@ const GlassCard = ({
     });
   }, [hovered, isActive]);
 
+  const cardScale = isMobile ? 0.7 : 1;
+  const htmlDistanceFactor = isMobile ? 4 : 3;
+
   return (
     <group
       ref={groupRef}
@@ -65,11 +68,11 @@ const GlassCard = ({
         document.body.style.cursor = 'auto';
       }}
     >
-      <mesh position={[0, 0, -0.01]}>
+      <mesh position={[0, 0, -0.01]} scale={[cardScale, cardScale, 1]}>
         <planeGeometry args={[1.42, 2.02]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.1} />
       </mesh>
-      <mesh>
+      <mesh scale={[cardScale, cardScale, 1]}>
         <planeGeometry args={[1.4, 2.0]} />
         <meshPhysicalMaterial
           color="#ffffff"
@@ -79,11 +82,11 @@ const GlassCard = ({
           metalness={0.15}
         />
       </mesh>
-      <mesh position={[0, 0, 0.01]}>
+      <mesh position={[0, 0, 0.01]} scale={[cardScale, cardScale, 1]}>
         <planeGeometry args={[1.35, 1.95]} />
         <meshBasicMaterial color="#050510" transparent opacity={0.5} />
       </mesh>
-      <Html position={[0, 0.35, 0.02]} center transform distanceFactor={3}>
+      <Html position={[0, 0.35 * cardScale, 0.02]} center transform distanceFactor={htmlDistanceFactor}>
         <div style={{
           width: '110px',
           height: '110px',
@@ -99,21 +102,21 @@ const GlassCard = ({
       </Html>
       <Text
         font="./soria-font.ttf"
-        fontSize={0.12}
+        fontSize={isMobile ? 0.1 : 0.12}
         color="#ffffff"
         anchorX="center"
         anchorY="middle"
-        position={[0, -0.65, 0.02]}
+        position={[0, -0.65 * cardScale, 0.02]}
       >
         {label}
       </Text>
       <Text
         font="./Vercetti-Regular.woff"
-        fontSize={0.055}
+        fontSize={isMobile ? 0.045 : 0.055}
         color="#aaaaaa"
         anchorX="center"
         anchorY="middle"
-        position={[0, -0.85, 0.02]}
+        position={[0, -0.85 * cardScale, 0.02]}
       >
         {subtitle}
       </Text>
