@@ -36,11 +36,11 @@ const GridTile = (props: GridTileProps) => {
       const yPos = 1.2;
       
       if (id === 'work') {
-        xPos = -0.5;
+        xPos = -1.2;
       } else if (id === 'projects') {
         xPos = 0;
       } else {
-        xPos = 0.5;
+        xPos = 1.2;
       }
 
       gsap.to(titleRef.current, {
