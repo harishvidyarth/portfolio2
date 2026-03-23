@@ -7,7 +7,7 @@ import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
-import { TouchPanControls } from "../projects/TouchPanControls";
+import { TouchPanControls } from "./TouchPanControls";
 
 const LOTTIE_KARATE = '/lottie/karate.json';
 const LOTTIE_MUSIC = '/lottie/music.json';
@@ -262,7 +262,7 @@ const Activities = () => {
         <>
           <GlassCard side="left" isActive={isActive} />
           <GlassCard side="right" isActive={isActive} />
-          {isMobile && touchReady && <TouchPanControls />}
+          {isMobile && touchReady && <TouchPanControls initialRotationY={0} />}
         </>
       )}
 
