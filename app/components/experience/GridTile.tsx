@@ -37,7 +37,7 @@ const GridTile = (props: GridTileProps) => {
       });
       gsap.to(titleRef.current.position, {
         x: 0,
-        y: 0.6,
+        y: -1.2,
         duration: 0.5,
       });
     }
@@ -111,10 +111,10 @@ const GridTile = (props: GridTileProps) => {
     maxWidth: 2,
     anchorX: 'center',
     anchorY: 'bottom',
-    fontSize: 0.7,
+    fontSize: isMobile ? 0.13 : 0.7,
     color: 'white',
     textAlign: textAlign,
-    fillOpacity: 0,
+    fillOpacity: isMobile ? 1 : 0,
   };
 
   const onPointerOver = () => {
@@ -161,7 +161,7 @@ const GridTile = (props: GridTileProps) => {
           <meshPhysicalMaterial color="#444" transparent={true} opacity={0.3} />
           <Edges color="white" lineWidth={3} />
         </mesh>
-        <Text position={isMobile ? [0, 0.5, 0.4] : [0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
+        <Text position={isMobile ? [0, -1.2, 0.4] : [0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
           {title}
         </Text>
       </group>
