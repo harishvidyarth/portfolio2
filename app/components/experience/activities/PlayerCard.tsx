@@ -2,7 +2,7 @@ import React from 'react';
 import { Player } from '@lottiefiles/react-lottie-player';
 
 interface PlayerCardProps {
-  src: string;
+  src: string | object;
 }
 
 const PlayerCard = ({ src }: PlayerCardProps) => {

@@ -9,8 +9,8 @@ import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
 import { TouchPanControls } from "./TouchPanControls";
 
-const LOTTIE_KARATE = '/lottie/karate.json';
-const LOTTIE_MUSIC = '/lottie/music.json';
+import karateAnimation from '../../../../public/lottie/karate.json';
+import musicAnimation from '../../../../public/lottie/music.json';
 
 const PlayerCard = dynamic(() => import('./PlayerCard'), { ssr: false });
 
@@ -26,7 +26,7 @@ const GlassCard = ({
   const xPos = side === 'left' ? (isMobile ? -1.2 : -2.2) : (isMobile ? 1.2 : 2.2);
   const label = side === 'left' ? 'KARATE' : 'MUSIC';
   const subtitle = side === 'left' ? '2ND DAN BLACK BELT' : 'KEYS. STAGE. VIBES';
-  const lottieSrc = side === 'left' ? LOTTIE_KARATE : LOTTIE_MUSIC;
+  const lottieSrc = side === 'left' ? karateAnimation : musicAnimation;
 
   useEffect(() => {
     if (!groupRef.current) return;
