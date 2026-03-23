@@ -151,7 +151,7 @@ const Activities = () => {
       } else {
         gsap.to(camera.position, { 
           y: -39, 
-          x: 0, 
+          x: 2, 
           z: 11.5, 
           duration: 1
         });
