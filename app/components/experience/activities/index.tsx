@@ -139,11 +139,11 @@ const Activities = () => {
       if (isMobile) {
         gsap.to(camera.position, {
           y: -40,
-          x: 0,
-          z: 9,
+          x: 5,
+          z: 11.5,
           duration: 1,
           onComplete: () => { 
-            targetZ.current = 9;
+            targetZ.current = 11.5;
             setTouchReady(true);
           }
         });
@@ -151,8 +151,8 @@ const Activities = () => {
       } else {
         gsap.to(camera.position, { 
           y: -40, 
-          x: 0, 
-          z: 9, 
+          x: 5, 
+          z: 11.5, 
           duration: 1
         });
         gsap.to(camera.rotation, { x: 0, y: 0, z: 0, duration: 1 });
