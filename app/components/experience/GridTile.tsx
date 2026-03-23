@@ -203,7 +203,7 @@ const GridTile = (props: GridTileProps) => {
           <meshPhysicalMaterial color="#444" transparent={true} opacity={0.3} />
           <Edges color="white" lineWidth={3} />
         </mesh>
-        <Text position={[0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
+        <Text position={isMobile ? [0, 0.5, 0.4] : [0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
           {title}
         </Text>
       </group>
