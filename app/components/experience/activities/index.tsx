@@ -68,7 +68,6 @@ const GlassCard = ({
         <planeGeometry args={[1.42, 2.02]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.1} />
       </mesh>
-
       <mesh>
         <planeGeometry args={[1.4, 2.0]} />
         <meshPhysicalMaterial
@@ -79,12 +78,10 @@ const GlassCard = ({
           metalness={0.15}
         />
       </mesh>
-
       <mesh position={[0, 0, 0.01]}>
         <planeGeometry args={[1.35, 1.95]} />
         <meshBasicMaterial color="#050510" transparent opacity={0.5} />
       </mesh>
-
       <Html position={[0, 0.35, 0.02]} center transform distanceFactor={3}>
         <div style={{
           width: '110px',
@@ -99,7 +96,6 @@ const GlassCard = ({
           <PlayerCard src={lottieSrc} />
         </div>
       </Html>
-
       <Text
         font="./soria-font.ttf"
         fontSize={0.12}
@@ -110,7 +106,6 @@ const GlassCard = ({
       >
         {label}
       </Text>
-
       <Text
         font="./Vercetti-Regular.woff"
         fontSize={0.055}
@@ -126,9 +121,13 @@ const GlassCard = ({
 };
 
 const Activities = () => {
-  const { camera } = useThree();
+  const { camera, gl } = useThree();
   const isActive = usePortalStore((state) => state.activePortalId === "activities");
   const data = useScroll();
+
+  const touchPointer = useRef({ x: 0, y: 0 });
+  const pinchRef = useRef<number | null>(null);
+  const targetZ = useRef(11.5);
 
   useEffect(() => {
     if (data?.el) {
@@ -136,23 +135,86 @@ const Activities = () => {
     }
     if (isActive) {
       if (isMobile) {
-        gsap.to(camera.position, { z: 11.5, y: -39, x: 2, duration: 1 });
+        gsap.to(camera.position, {
+          y: -39,
+          x: 0,
+          z: 11.5,
+          duration: 1,
+          onComplete: () => { targetZ.current = 11.5; }
+        });
       } else {
         gsap.to(camera.position, { y: -39, x: 2, z: 11.5, duration: 1 });
       }
     }
   }, [isActive, camera, data]);
 
-  useFrame((frameState, delta) => {
-    if (isActive && !isMobile) {
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const canvas = gl.domElement;
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!isActive) return;
+
+      if (e.touches.length === 1) {
+        touchPointer.current = {
+          x: (e.touches[0].clientX / window.innerWidth) * 2 - 1,
+          y: -((e.touches[0].clientY / window.innerHeight) * 2 - 1),
+        };
+      }
+
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (pinchRef.current !== null) {
+          const delta = pinchRef.current - dist;
+          targetZ.current = THREE.MathUtils.clamp(
+            targetZ.current + delta * 0.02,
+            6,
+            18
+          );
+        }
+        pinchRef.current = dist;
+      }
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) pinchRef.current = null;
+    };
+
+    canvas.addEventListener('touchmove', onTouchMove, { passive: true });
+    canvas.addEventListener('touchend', onTouchEnd, { passive: true });
+    return () => {
+      canvas.removeEventListener('touchmove', onTouchMove);
+      canvas.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [isActive, gl]);
+
+  useFrame((state, delta) => {
+    if (!isActive) return;
+
+    if (isMobile) {
       camera.rotation.y = THREE.MathUtils.lerp(
         camera.rotation.y,
-        -(frameState.pointer.x * Math.PI) / 10,
+        -(touchPointer.current.x * Math.PI) / 10,
+        0.05
+      );
+      camera.position.z = THREE.MathUtils.damp(
+        camera.position.z,
+        targetZ.current,
+        6,
+        delta
+      );
+    } else {
+      camera.rotation.y = THREE.MathUtils.lerp(
+        camera.rotation.y,
+        -(state.pointer.x * Math.PI) / 10,
         0.02
       );
       camera.position.z = THREE.MathUtils.damp(
         camera.position.z,
-        11.5 - frameState.pointer.y,
+        11.5 - state.pointer.y,
         7,
         delta
       );
@@ -173,7 +235,7 @@ const Activities = () => {
 
       <group
         scale={new THREE.Vector3(1.5, 1.5, 1.5)}
-        position={[0, -4, 0]}
+        position={isMobile ? [0, -4, 0] : [0, -4, 0]}
       >
         <SpaceBoi />
       </group>
