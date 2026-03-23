@@ -205,7 +205,7 @@ const GridTile = (props: GridTileProps) => {
           />
           <Edges color="white" lineWidth={3}/>
         </mesh>
-        <Text position={isMobile ? (id === 'work' ? [-1.2, 1.2, 0.4] : id === 'projects' ? [0, 1.2, 0.4] : [1.2, 1.2, 0.4]) : [0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
+        <Text position={[0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
           {title}
         </Text>
       </group>
