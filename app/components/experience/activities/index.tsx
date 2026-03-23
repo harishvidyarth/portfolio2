@@ -137,7 +137,7 @@ const Activities = () => {
     if (isActive) {
       if (isMobile) {
         gsap.to(camera.position, {
-          y: -50,
+          y: -10,
           x: 0,
           z: 11.5,
           duration: 1,
