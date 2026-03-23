@@ -99,7 +99,7 @@ const GridTile = (props: GridTileProps) => {
   };
 
   const onPointerOver = () => {
-    if (isActive || isMobile) return;
+    if (isActive) return;
     document.body.style.cursor = 'pointer';
     gsap.to(titleRef.current, { fillOpacity: 1 });
     if (gridRef.current && hoverBoxRef.current) {
@@ -109,7 +109,6 @@ const GridTile = (props: GridTileProps) => {
   };
 
   const onPointerOut = () => {
-    if (isMobile) return;
     document.body.style.cursor = 'auto';
     gsap.to(titleRef.current, { fillOpacity: 0 });
     if (gridRef.current && hoverBoxRef.current) {
