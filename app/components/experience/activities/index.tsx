@@ -86,16 +86,13 @@ const GlassCard = ({
         <planeGeometry args={[1.35, 1.95]} />
         <meshBasicMaterial color="#050510" transparent opacity={0.5} />
       </mesh>
-      <Html position={[0, 0.35 * cardScale, 0.02]} center transform distanceFactor={htmlDistanceFactor}>
+      <Html position={[0, 0.35 * cardScale, 0.02]} center transform distanceFactor={htmlDistanceFactor} style={{ pointerEvents: 'none' }}>
         <div style={{
           width: '110px',
           height: '110px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          opacity: hovered ? 1 : 0.4,
-          transition: 'opacity 0.3s ease',
-          pointerEvents: 'none',
         }}>
           <PlayerCard src={lottieSrc} />
         </div>
@@ -148,10 +145,21 @@ const Activities = () => {
           onComplete: () => { 
             targetZ.current = 11.5;
             setTouchReady(true);
+          },
+          onUpdate: () => {
+            camera.lookAt(0, -39, 0);
           }
         });
       } else {
-        gsap.to(camera.position, { y: -39, x: 0, z: 11.5, duration: 1 });
+        gsap.to(camera.position, { 
+          y: -39, 
+          x: 0, 
+          z: 11.5, 
+          duration: 1,
+          onUpdate: () => {
+            camera.lookAt(0, -39, 0);
+          }
+        });
       }
     }
   }, [isActive, camera, data]);
