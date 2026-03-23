@@ -137,11 +137,15 @@ const Activities = () => {
     if (isActive) {
       if (isMobile) {
         gsap.to(camera.position, {
-          y: -39,
+          y: -50,
           x: 0,
           z: 11.5,
           duration: 1,
           onComplete: () => { targetZ.current = 11.5; }
+        });
+        gsap.to(camera.rotation, {
+          x: 0.6,
+          duration: 1,
         });
       } else {
         gsap.to(camera.position, { y: -39, x: 2, z: 11.5, duration: 1 });
