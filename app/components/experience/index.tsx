@@ -21,7 +21,7 @@ const Experience = () => {
     color: 'white',
   };
 
-  useFrame((sate, delta) => {
+  useFrame((state, delta) => {
     const d = data.range(0.8, 0.2);
     const e = data.range(0.7, 0.2);
 
@@ -32,9 +32,9 @@ const Experience = () => {
 
     if (titleRef.current) {
       titleRef.current.children.forEach((text, i) => {
-        const y =  Math.max(Math.min((1 - d) * (10 - i), 10), 0.5);
+        const y = Math.max(Math.min((1 - d) * (10 - i), 10), 0.5);
         text.position.y = THREE.MathUtils.damp(text.position.y, y, 7, delta);
-        /* eslint-disable  @typescript-eslint/no-explicit-any */
+        /* eslint-disable @typescript-eslint/no-explicit-any */
         (text as any).fillOpacity = e;
       });
     }
@@ -51,33 +51,61 @@ const Experience = () => {
   };
 
   return (
-    <group position={[0, -41.5, 12]} rotation={[-Math.PI / 2, 0 ,-Math.PI / 2]}>
+    <group position={[0, -41.5, 12]} rotation={[-Math.PI / 2, 0, -Math.PI / 2]}>
       <group rotation={[0, 0, Math.PI / 2]}>
         <group ref={titleRef} position={[isMobile ? -1.8 : -3.6, 2, -2]}>
           {getTitle()}
         </group>
 
-        <group position={[0, -1, 0]} scale={isMobile ? 0.8 : 1} ref={groupRef}>
-          <GridTile title='WORK AND EDUCATION'
+        {/*
+          MOBILE: Stack tiles vertically at x:0, y: +2, 0, -2
+          DESKTOP: Side by side at x: -2.5, 0, +2.5
+        */}
+        <group
+          position={[0, -1, 0]}
+          scale={isMobile ? 0.8 : 1}
+          ref={groupRef}
+        >
+          <GridTile
+            title='WORK AND EDUCATION'
             id="work"
             color='#b9c6d6'
             textAlign='left'
-            position={new THREE.Vector3(isMobile ? -1 : -2.5, 0, 0)}>
-            <Work/>
+            position={new THREE.Vector3(
+              isMobile ? 0 : -2.5,
+              isMobile ? 2.2 : 0,
+              0
+            )}
+          >
+            <Work />
           </GridTile>
-          <GridTile title='PROJECTS'
+
+          <GridTile
+            title='PROJECTS'
             id="projects"
             color='#bdd1e3'
             textAlign='right'
-            position={new THREE.Vector3(0, 0, 0)}>
-            <Projects/>
+            position={new THREE.Vector3(
+              0,
+              isMobile ? 0 : 0,
+              0
+            )}
+          >
+            <Projects />
           </GridTile>
-          <GridTile title='EXTRA CURRICULAR'
+
+          <GridTile
+            title='EXTRA CURRICULAR'
             id="activities"
             color='#c4d9e8'
             textAlign='right'
-            position={new THREE.Vector3(isMobile ? 1 : 2.5, 0, 0)}>
-            <Activities/>
+            position={new THREE.Vector3(
+              isMobile ? 0 : 2.5,
+              isMobile ? -2.2 : 0,
+              0
+            )}
+          >
+            <Activities />
           </GridTile>
         </group>
       </group>

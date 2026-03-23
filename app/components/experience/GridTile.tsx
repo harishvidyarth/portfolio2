@@ -1,12 +1,10 @@
-
-import { Edges, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-three/drei';
+import { Edges, Html, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { usePortalStore } from '@stores';
 import gsap from "gsap";
 import { useEffect, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
 import * as THREE from 'three';
-import { TriangleGeometry } from './Triangle';
 
 interface GridTileProps {
   id: string;
@@ -17,7 +15,45 @@ interface GridTileProps {
   position: THREE.Vector3;
 }
 
-// TODO: Rename this
+const MobileDiagonalOverlay = ({ id }: { id: string }) => {
+  const renderLines = () => {
+    if (id === 'work') {
+      return <line x1="0" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />;
+    } else if (id === 'projects') {
+      return (
+        <>
+          <line x1="0" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />
+          <line x1="100%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />
+        </>
+      );
+    } else {
+      return <line x1="100%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />;
+    }
+  };
+
+  return (
+    <Html
+      center
+      transform={false}
+      style={{
+        width: '320px',
+        height: '180px',
+        pointerEvents: 'none',
+      }}
+    >
+      <svg
+        width="320"
+        height="180"
+        viewBox="0 0 320 180"
+        style={{ position: 'absolute', top: 0, left: 0 }}
+        preserveAspectRatio="none"
+      >
+        {renderLines()}
+      </svg>
+    </Html>
+  );
+};
+
 const GridTile = (props: GridTileProps) => {
   const titleRef = useRef<THREE.Group>(null);
   const gridRef = useRef<THREE.Group>(null);
@@ -32,17 +68,6 @@ const GridTile = (props: GridTileProps) => {
 
   useEffect(() => {
     if (isMobile && titleRef.current) {
-      let xPos = 0;
-      const yPos = 1.2;
-      
-      if (id === 'work') {
-        xPos = -1.2;
-      } else if (id === 'projects') {
-        xPos = 0;
-      } else {
-        xPos = 1.2;
-      }
-
       gsap.to(titleRef.current, {
         fontSize: 0.13,
         maxWidth: 2,
@@ -50,8 +75,8 @@ const GridTile = (props: GridTileProps) => {
         letterSpacing: 0.3,
       });
       gsap.to(titleRef.current.position, {
-        x: xPos,
-        y: yPos,
+        x: 0,
+        y: 0.6,
         duration: 0.5,
       });
     }
@@ -60,7 +85,7 @@ const GridTile = (props: GridTileProps) => {
   useFrame(() => {
     const d = data.range(0.95, 0.05);
     if (isMobile && titleRef.current) {
-      /* eslint-disable  @typescript-eslint/no-explicit-any */
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       (titleRef.current as any).fillOpacity = d;
     }
   });
@@ -84,17 +109,16 @@ const GridTile = (props: GridTileProps) => {
 
     if (!document.querySelector('.close')) {
       document.body.appendChild(div);
-
       gsap.fromTo(div, {
         scale: 0,
         rotate: '-180deg',
-      },{
+      }, {
         opacity: 1,
         zIndex: 10,
         transform: 'rotateX(0deg)',
         scale: 1,
         duration: 1,
-      })
+      });
     }
     document.body.addEventListener('keydown', handleEscape);
     gsap.to(portalRef.current, {
@@ -105,36 +129,21 @@ const GridTile = (props: GridTileProps) => {
 
   const exitPortal = (force = false) => {
     if (!force && !activePortalId) return;
-    setActivePortal(null)
+    setActivePortal(null);
 
-    gsap.to(camera.position, {
-      x: 0,
-      duration: 1,
-    });
+    gsap.to(camera.position, { x: 0, duration: 1 });
+    gsap.to(camera.rotation, { x: -Math.PI / 2, y: 0, duration: 1 });
+    gsap.to(portalRef.current, { blend: 0, duration: 1 });
 
-    gsap.to(camera.rotation, {
-      x: -Math.PI / 2,
-      y: 0,
-      duration: 1,
-    });
-
-    gsap.to(portalRef.current, {
-      blend: 0,
-      duration: 1,
-    });
-
-    // Remove the div from the dom
     gsap.to(document.querySelector('.close'), {
       scale: 0,
       duration: 0.5,
       onComplete: () => {
-        document.querySelectorAll('.close').forEach((el) => {
-          el.remove();
-        });
+        document.querySelectorAll('.close').forEach((el) => el.remove());
       }
-    })
+    });
     document.body.removeEventListener('keydown', handleEscape);
-  }
+  };
 
   const fontProps: Partial<TextProps> = {
     font: "./soria-font.ttf",
@@ -150,11 +159,9 @@ const GridTile = (props: GridTileProps) => {
   const onPointerOver = () => {
     if (isActive || isMobile) return;
     document.body.style.cursor = 'pointer';
-    gsap.to(titleRef.current, {
-      fillOpacity: 1
-    });
+    gsap.to(titleRef.current, { fillOpacity: 1 });
     if (gridRef.current && hoverBoxRef.current) {
-      gsap.to(gridRef.current.position, { z: 0.5, duration: 0.4});
+      gsap.to(gridRef.current.position, { z: 0.5, duration: 0.4 });
       gsap.to(hoverBoxRef.current.scale, { x: 1, y: 1, z: 1, duration: 0.4 });
     }
   };
@@ -162,60 +169,50 @@ const GridTile = (props: GridTileProps) => {
   const onPointerOut = () => {
     if (isMobile) return;
     document.body.style.cursor = 'auto';
-    gsap.to(titleRef.current, {
-      fillOpacity: 0
-    });
+    gsap.to(titleRef.current, { fillOpacity: 0 });
     if (gridRef.current && hoverBoxRef.current) {
-      gsap.to(gridRef.current.position, { z: 0, duration: 0.4});
+      gsap.to(gridRef.current.position, { z: 0, duration: 0.4 });
       gsap.to(hoverBoxRef.current.scale, { x: 0, y: 0, z: 0, duration: 0.4 });
     }
   };
 
   const getGeometry = () => {
     if (!isMobile) {
-      return <planeGeometry args={[4, 4, 1]} />
+      return <planeGeometry args={[4, 4, 1]} />;
     }
-
-    let points: number[][];
-    if (id === 'work') {
-      points = [[-2, 2, 0], [-2, -2, 0], [0, -2, 0]];
-    } else if (id === 'projects') {
-      points = [[-1, 2, 0], [0, -2, 0], [1, 2, 0]];
-    } else {
-      points = [[0, -2, 0], [2, -2, 0], [2, 2, 0]];
-    }
-
-    return <primitive object={TriangleGeometry({ points })} attach="geometry" />
+    return <planeGeometry args={[3.5, 1.8, 1]} />;
   };
 
   return (
-    <mesh ref={gridRef}
+    <mesh
+      ref={gridRef}
       position={position}
       onClick={portalInto}
       onPointerOver={onPointerOver}
-      onPointerOut={onPointerOut}>
-      { getGeometry() }
+      onPointerOut={onPointerOut}
+    >
+      {getGeometry()}
       {isMobile && <meshBasicMaterial color={color} side={THREE.DoubleSide} />}
+
+      {isMobile && <MobileDiagonalOverlay id={id} />}
+
       <group>
         <mesh position={[0, 0, -0.01]} ref={hoverBoxRef} scale={[0, 0, 0]}>
-          <boxGeometry args={[4, 4, 0.5]}/>
-          <meshPhysicalMaterial
-            color="#444"
-            transparent={true}
-            opacity={0.3}
-          />
-          <Edges color="white" lineWidth={3}/>
+          <boxGeometry args={[4, 4, 0.5]} />
+          <meshPhysicalMaterial color="#444" transparent={true} opacity={0.3} />
+          <Edges color="white" lineWidth={3} />
         </mesh>
         <Text position={[0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
           {title}
         </Text>
       </group>
+
       <MeshPortalMaterial ref={portalRef} blend={0} resolution={0} blur={0}>
         <color attach="background" args={[color]} />
         {children}
       </MeshPortalMaterial>
     </mesh>
   );
-}
+};
 
 export default GridTile;
