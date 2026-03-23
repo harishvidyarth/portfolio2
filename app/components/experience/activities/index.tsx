@@ -128,7 +128,7 @@ const Activities = () => {
 
   const touchPointer = useRef({ x: 0, y: 0 });
   const pinchRef = useRef<number | null>(null);
-  const targetZ = useRef(0);
+  const targetZ = useRef(11.5);
 
   useEffect(() => {
     if (data?.el) {
@@ -139,9 +139,9 @@ const Activities = () => {
         gsap.to(camera.position, {
           y: -39,
           x: 0,
-z: 0,
+z: 11.5,
           duration: 1,
-          onComplete: () => { targetZ.current = 0; }
+          onComplete: () => { targetZ.current = 11.5; }
         });
       } else {
         gsap.to(camera.position, { y: -39, x: 0, z: 11.5, duration: 1 });
