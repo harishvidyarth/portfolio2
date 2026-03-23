@@ -1,17 +1,33 @@
-import React from 'react';
-import { Player } from '@lottiefiles/react-lottie-player';
+import React, { useEffect, useRef } from 'react';
+import lottie, { AnimationItem } from 'lottie-web';
 
 interface PlayerCardProps {
-  src: string | object;
+  src: object;
 }
 
 const PlayerCard = ({ src }: PlayerCardProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const animRef = useRef<AnimationItem | null>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    animRef.current = lottie.loadAnimation({
+      container: containerRef.current,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      animationData: src,
+    });
+
+    return () => {
+      animRef.current?.destroy();
+    };
+  }, [src]);
+
   return (
-    <Player
-      src={src}
-      autoplay
-      loop
-      renderer="svg"
+    <div
+      ref={containerRef}
       style={{ width: '100%', height: '100%' }}
     />
   );
