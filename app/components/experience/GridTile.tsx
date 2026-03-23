@@ -32,20 +32,30 @@ const GridTile = (props: GridTileProps) => {
 
   useEffect(() => {
     if (isMobile && titleRef.current) {
-      const isWork = id === 'work';
+      let xPos = 0;
+      const yPos = 1.2;
+      
+      if (id === 'work') {
+        xPos = -1.2;
+      } else if (id === 'projects') {
+        xPos = 0;
+      } else {
+        xPos = 1.2;
+      }
+
       gsap.to(titleRef.current, {
         fontSize: 0.13,
-        maxWidth: 4,
-        color: isWork ? '#FFF' : '#888',
-        letterSpacing: 0.4,
+        maxWidth: 3,
+        color: '#FFF',
+        letterSpacing: 0.3,
       });
       gsap.to(titleRef.current.position, {
-        x: isWork ? 1 : -1,
-        y: isWork ? -1.7 : 1.5,
+        x: xPos,
+        y: yPos,
         duration: 0.5,
       });
     }
-  }, []);
+  }, [id]);
 
   useFrame(() => {
     const d = data.range(0.95, 0.05);
@@ -195,7 +205,7 @@ const GridTile = (props: GridTileProps) => {
           />
           <Edges color="white" lineWidth={3}/>
         </mesh>
-        <Text position={[0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
+        <Text position={isMobile ? (id === 'work' ? [-1.2, 1.2, 0.4] : id === 'projects' ? [0, 1.2, 0.4] : [1.2, 1.2, 0.4]) : [0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
           {title}
         </Text>
       </group>
