@@ -138,8 +138,8 @@ const Activities = () => {
     if (isActive) {
       if (isMobile) {
         gsap.to(camera.position, {
-          y: -40,
-          x: 5,
+          y: -39,
+          x: 0,
           z: 11.5,
           duration: 1,
           onComplete: () => { 
@@ -150,8 +150,8 @@ const Activities = () => {
         gsap.to(camera.rotation, { x: 0, y: 0, z: 0, duration: 1 });
       } else {
         gsap.to(camera.position, { 
-          y: -40, 
-          x: 5, 
+          y: -39, 
+          x: 0, 
           z: 11.5, 
           duration: 1
         });
