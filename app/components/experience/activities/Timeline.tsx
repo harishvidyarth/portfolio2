@@ -1,5 +1,5 @@
 import { Box, Edges, Line, Text, TextProps } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { usePortalStore } from "@stores";
 import gsap from "gsap";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -63,7 +63,6 @@ const TimelinePoint = ({ point, diff }: { point: WorkTimelinePoint, diff: number
 };
 
 const Timeline = ({ progress }: { progress: number }) => {
-  const { camera } = useThree();
   const isActive = usePortalStore((state) => state.activePortalId === 'activities');
   const timeline = useMemo(() => ACTIVITIES_TIMELINE, []);
 
@@ -75,13 +74,8 @@ const Timeline = ({ progress }: { progress: number }) => {
   const [visibleDashedCurvePoints, setVisibleDashedCurvePoints] = useState<THREE.Vector3[]>([]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  useFrame((_, delta) => {
-    if (isActive) {
-      const position = curve.getPoint(progress);
-      camera.position.x = THREE.MathUtils.damp(camera.position.x, (isMobile ? -1 : -2) + position.x, 4, delta);
-      camera.position.y = THREE.MathUtils.damp(camera.position.y, -39 + position.z, 4, delta);
-      camera.position.z = THREE.MathUtils.damp(camera.position.z, 13 - position.y, 4, delta);
-    }
+  useFrame(() => {
+    // Camera is controlled by parent activities/index.tsx
   });
 
   const groupRef = useRef<THREE.Group>(null);
