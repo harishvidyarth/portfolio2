@@ -50,7 +50,6 @@ const GlassCard = ({
   }, [hovered, isActive]);
 
   const cardScale = isMobile ? 0.7 : 1;
-  const htmlDistanceFactor = isMobile ? 4 : 3;
 
   return (
     <group
@@ -86,10 +85,10 @@ const GlassCard = ({
         <planeGeometry args={[1.35, 1.95]} />
         <meshBasicMaterial color="#050510" transparent opacity={0.5} />
       </mesh>
-      <Html position={[0, 0.35 * cardScale, 0.02]} center transform distanceFactor={htmlDistanceFactor} style={{ pointerEvents: 'none' }}>
+      <Html position={[0, 0.35 * cardScale, 0.02]} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
         <div style={{
-          width: '110px',
-          height: '110px',
+          width: isMobile ? '80px' : '120px',
+          height: isMobile ? '80px' : '120px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
