@@ -93,6 +93,8 @@ const GlassCard = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          opacity: 1,
+          pointerEvents: 'none',
         }}>
           <PlayerCard src={lottieSrc} />
         </div>
