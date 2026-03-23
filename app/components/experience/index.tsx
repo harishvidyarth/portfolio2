@@ -58,27 +58,55 @@ const Experience = () => {
         </group>
 
         <group position={[0, -1, 0]} ref={groupRef}>
-          <GridTile title='WORK AND EDUCATION'
-            id="work"
-            color='#b9c6d6'
-            textAlign='left'
-            position={new THREE.Vector3(-2.5, 0, 0)}>
-            <Work/>
-          </GridTile>
-          <GridTile title='PROJECTS'
-            id="projects"
-            color='#bdd1e3'
-            textAlign='right'
-            position={new THREE.Vector3(0, 0, 0)}>
-            <Projects/>
-          </GridTile>
-          <GridTile title='EXTRA CURRICULAR'
-            id="activities"
-            color='#c4d9e8'
-            textAlign='right'
-            position={new THREE.Vector3(2.5, 0, 0)}>
-            <Activities/>
-          </GridTile>
+          {isMobile ? (
+            <>
+              <GridTile title='WORK AND EDUCATION'
+                id="work"
+                color='#b9c6d6'
+                textAlign='left'
+                position={new THREE.Vector3(0, 2, 0)}>
+                <Work/>
+              </GridTile>
+              <GridTile title='PROJECTS'
+                id="projects"
+                color='#bdd1e3'
+                textAlign='center'
+                position={new THREE.Vector3(0, 0, 0)}>
+                <Projects/>
+              </GridTile>
+              <GridTile title='EXTRA CURRICULAR'
+                id="activities"
+                color='#c4d9e8'
+                textAlign='right'
+                position={new THREE.Vector3(0, -2, 0)}>
+                <Activities/>
+              </GridTile>
+            </>
+          ) : (
+            <>
+              <GridTile title='WORK AND EDUCATION'
+                id="work"
+                color='#b9c6d6'
+                textAlign='left'
+                position={new THREE.Vector3(-2.5, 0, 0)}>
+                <Work/>
+              </GridTile>
+              <GridTile title='PROJECTS'
+                id="projects"
+                color='#bdd1e3'
+                textAlign='right'
+                position={new THREE.Vector3(0, 0, 0)}>
+                <Projects/>
+              </GridTile>
+              <GridTile title='EXTRA CURRICULAR'
+                id="activities"
+                color='#c4d9e8'
+                textAlign='right'
+                position={new THREE.Vector3(2.5, 0, 0)}>
+                <Activities/>
+              </GridTile>
+            </>
+          )}
         </group>
       </group>
     </group>
