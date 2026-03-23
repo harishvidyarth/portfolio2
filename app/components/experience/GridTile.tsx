@@ -32,31 +32,20 @@ const GridTile = (props: GridTileProps) => {
 
   useEffect(() => {
     if (isMobile && titleRef.current) {
-      let xPos = 0;
-      const yPos = -0.7;
-      const titleColor = '#FFF';
-
-      if (id === 'work') {
-        xPos = -0.8;
-      } else if (id === 'projects') {
-        xPos = 0;
-      } else {
-        xPos = 0.8;
-      }
-
+      const isWork = id === 'work';
       gsap.to(titleRef.current, {
         fontSize: 0.13,
         maxWidth: 4,
-        color: titleColor,
+        color: isWork ? '#FFF' : '#888',
         letterSpacing: 0.4,
       });
       gsap.to(titleRef.current.position, {
-        x: xPos,
-        y: yPos,
+        x: isWork ? 1 : -1,
+        y: isWork ? -1.7 : 1.5,
         duration: 0.5,
       });
     }
-  }, [id]);
+  }, []);
 
   useFrame(() => {
     const d = data.range(0.95, 0.05);
@@ -177,14 +166,10 @@ const GridTile = (props: GridTileProps) => {
       return <planeGeometry args={[4, 4, 1]} />
     }
 
-    let points: number[][];
-    if (id === 'work') {
-      points = [[-2, 1, 0], [-2, -1, 0], [2, -1, 0]];
-    } else if (id === 'projects') {
-      points = [[-2, 1, 0], [0, -1, 0], [2, 1, 0]];
-    } else {
-      points = [[-2, -1, 0], [2, -1, 0], [2, 1, 0]];
-    }
+    const isWork = id === 'work';
+    const points = isWork ?
+      [[-1, 2, 0], [-1, -2, 0], [3, -2, 0]] :
+      [[-3, 2, 0], [1, -2, 0], [1, 2, 0]];
 
     return <primitive object={TriangleGeometry({ points })} attach="geometry" />
   };
@@ -198,7 +183,7 @@ const GridTile = (props: GridTileProps) => {
       { getGeometry() }
       <group>
         <mesh position={[0, 0, -0.01]} ref={hoverBoxRef} scale={[0, 0, 0]}>
-          <boxGeometry args={[isMobile ? 3.5 : 4, isMobile ? 1.8 : 4, 0.5]}/>
+          <boxGeometry args={[4, 4, 0.5]}/>
           <meshPhysicalMaterial
             color="#444"
             transparent={true}
