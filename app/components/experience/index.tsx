@@ -63,7 +63,7 @@ const Experience = () => {
         */}
         <group
           position={[0, -1, 0]}
-          scale={1}
+          scale={isMobile ? 0.8 : 1}
           ref={groupRef}
         >
           <GridTile
@@ -71,7 +71,11 @@ const Experience = () => {
             id="work"
             color='#b9c6d6'
             textAlign='left'
-            position={new THREE.Vector3(-2.5, 0, 0)}
+            position={new THREE.Vector3(
+              isMobile ? 0 : -2.5,
+              isMobile ? 2.2 : 0,
+              0
+            )}
           >
             <Work />
           </GridTile>
@@ -81,7 +85,11 @@ const Experience = () => {
             id="projects"
             color='#bdd1e3'
             textAlign='right'
-            position={new THREE.Vector3(0, 0, 0)}
+            position={new THREE.Vector3(
+              0,
+              isMobile ? 0 : 0,
+              0
+            )}
           >
             <Projects />
           </GridTile>
@@ -91,7 +99,11 @@ const Experience = () => {
             id="activities"
             color='#c4d9e8'
             textAlign='right'
-            position={new THREE.Vector3(2.5, 0, 0)}
+            position={new THREE.Vector3(
+              isMobile ? 0 : 2.5,
+              isMobile ? -2.2 : 0,
+              0
+            )}
           >
             <Activities />
           </GridTile>

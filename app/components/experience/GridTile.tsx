@@ -1,8 +1,9 @@
-import { Edges, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-three/drei';
+import { Edges, Html, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { usePortalStore } from '@stores';
 import gsap from "gsap";
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { isMobile } from 'react-device-detect';
 import * as THREE from 'three';
 
 interface GridTileProps {
@@ -13,6 +14,45 @@ interface GridTileProps {
   color: string;
   position: THREE.Vector3;
 }
+
+const MobileDiagonalOverlay = ({ id }: { id: string }) => {
+  const renderLines = () => {
+    if (id === 'work') {
+      return <line x1="0" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />;
+    } else if (id === 'projects') {
+      return (
+        <>
+          <line x1="0" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />
+          <line x1="100%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />
+        </>
+      );
+    } else {
+      return <line x1="100%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />;
+    }
+  };
+
+  return (
+    <Html
+      center
+      transform={false}
+      style={{
+        width: '320px',
+        height: '180px',
+        pointerEvents: 'none',
+      }}
+    >
+      <svg
+        width="320"
+        height="180"
+        viewBox="0 0 320 180"
+        style={{ position: 'absolute', top: 0, left: 0 }}
+        preserveAspectRatio="none"
+      >
+        {renderLines()}
+      </svg>
+    </Html>
+  );
+};
 
 const GridTile = (props: GridTileProps) => {
   const titleRef = useRef<THREE.Group>(null);
@@ -26,10 +66,24 @@ const GridTile = (props: GridTileProps) => {
   const activePortalId = usePortalStore((state) => state.activePortalId);
   const data = useScroll();
 
+  useEffect(() => {
+    if (isMobile && titleRef.current) {
+      gsap.to(titleRef.current, {
+        fontSize: 0.1,
+        maxWidth: 2.5,
+        color: '#FFF',
+        letterSpacing: 0.2,
+        fillOpacity: 1,
+      });
+    }
+  }, [id]);
+
   useFrame(() => {
     const d = data.range(0.95, 0.05);
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    (titleRef.current as any).fillOpacity = d;
+    if (isMobile && titleRef.current) {
+      /* eslint-disable @typescript-eslint/no-explicit-any */
+      (titleRef.current as any).fillOpacity = d;
+    }
   });
 
   const handleEscape = (e: KeyboardEvent) => {
@@ -99,7 +153,7 @@ const GridTile = (props: GridTileProps) => {
   };
 
   const onPointerOver = () => {
-    if (isActive) return;
+    if (isActive || isMobile) return;
     document.body.style.cursor = 'pointer';
     gsap.to(titleRef.current, { fillOpacity: 1 });
     if (gridRef.current && hoverBoxRef.current) {
@@ -109,12 +163,20 @@ const GridTile = (props: GridTileProps) => {
   };
 
   const onPointerOut = () => {
+    if (isMobile) return;
     document.body.style.cursor = 'auto';
     gsap.to(titleRef.current, { fillOpacity: 0 });
     if (gridRef.current && hoverBoxRef.current) {
       gsap.to(gridRef.current.position, { z: 0, duration: 0.4 });
       gsap.to(hoverBoxRef.current.scale, { x: 0, y: 0, z: 0, duration: 0.4 });
     }
+  };
+
+  const getGeometry = () => {
+    if (!isMobile) {
+      return <planeGeometry args={[4, 4, 1]} />;
+    }
+    return <planeGeometry args={[3.5, 1.8, 1]} />;
   };
 
   return (
@@ -125,7 +187,10 @@ const GridTile = (props: GridTileProps) => {
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}
     >
-      <planeGeometry args={[4, 4, 1]} />
+      {getGeometry()}
+      {isMobile && <meshBasicMaterial color={color} side={THREE.DoubleSide} />}
+
+      {isMobile && <MobileDiagonalOverlay id={id} />}
 
       <group>
         <mesh position={[0, 0, -0.01]} ref={hoverBoxRef} scale={[0, 0, 0]}>
@@ -133,7 +198,7 @@ const GridTile = (props: GridTileProps) => {
           <meshPhysicalMaterial color="#444" transparent={true} opacity={0.3} />
           <Edges color="white" lineWidth={3} />
         </mesh>
-        <Text position={[0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
+        <Text position={isMobile ? [0, 0.6, 0.4] : [0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
           {title}
         </Text>
       </group>
