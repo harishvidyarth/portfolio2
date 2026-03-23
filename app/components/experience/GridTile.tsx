@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { useEffect, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
 import * as THREE from 'three';
+import { TriangleGeometry } from './Triangle';
 
 interface GridTileProps {
   id: string;
@@ -35,16 +36,16 @@ const GridTile = (props: GridTileProps) => {
       const yPos = 1.2;
       
       if (id === 'work') {
-        xPos = -0.8;
+        xPos = -0.5;
       } else if (id === 'projects') {
         xPos = 0;
       } else {
-        xPos = 0.8;
+        xPos = 0.5;
       }
 
       gsap.to(titleRef.current, {
         fontSize: 0.13,
-        maxWidth: 2.5,
+        maxWidth: 2,
         color: '#FFF',
         letterSpacing: 0.3,
       });
@@ -171,7 +172,20 @@ const GridTile = (props: GridTileProps) => {
   };
 
   const getGeometry = () => {
-    return <planeGeometry args={[4, 4, 1]} />
+    if (!isMobile) {
+      return <planeGeometry args={[4, 4, 1]} />
+    }
+
+    let points: number[][];
+    if (id === 'work') {
+      points = [[-1, 2, 0], [-1, -2, 0], [1, -2, 0]];
+    } else if (id === 'projects') {
+      points = [[-1, 2, 0], [0, -2, 0], [1, 2, 0]];
+    } else {
+      points = [[-1, -2, 0], [1, -2, 0], [1, 2, 0]];
+    }
+
+    return <primitive object={TriangleGeometry({ points })} attach="geometry" />
   };
 
   return (
