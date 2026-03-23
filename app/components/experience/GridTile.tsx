@@ -1,4 +1,4 @@
-import { Edges, Line, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-three/drei';
+import { Edges, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { usePortalStore } from '@stores';
 import gsap from "gsap";
@@ -14,21 +14,6 @@ interface GridTileProps {
   color: string;
   position: THREE.Vector3;
 }
-
-const MobileVLine = ({ id }: { id: string }) => {
-  if (id === 'work') {
-    return <Line points={[[0, 0.9], [1.7, -0.9]]} color="white" lineWidth={1.5} transparent opacity={0.4} />;
-  } else if (id === 'projects') {
-    return (
-      <>
-        <Line points={[[-1.7, 0.9], [0, -0.9]]} color="white" lineWidth={1.5} transparent opacity={0.4} />
-        <Line points={[[1.7, 0.9], [0, -0.9]]} color="white" lineWidth={1.5} transparent opacity={0.4} />
-      </>
-    );
-  } else {
-    return <Line points={[[-1.7, 0.9], [0, -0.9]]} color="white" lineWidth={1.5} transparent opacity={0.4} />;
-  }
-};
 
 const GridTile = (props: GridTileProps) => {
   const titleRef = useRef<THREE.Group>(null);
@@ -169,7 +154,6 @@ const GridTile = (props: GridTileProps) => {
     >
       {getGeometry()}
       {isMobile && <meshBasicMaterial color={color} side={THREE.DoubleSide} />}
-      {isMobile && <MobileVLine id={id} />}
 
       <group>
         <mesh position={[0, 0, -0.01]} ref={hoverBoxRef} scale={[0, 0, 0]}>
