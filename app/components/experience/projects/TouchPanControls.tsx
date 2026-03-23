@@ -13,17 +13,11 @@ export const TouchPanControls = () => {
   const targetRotationRef = useRef({ x: 0, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
 
-  // Set initial camera and target rotation values
+  // Set initial camera and target rotation values - force reset to 0 on mount
   useEffect(() => {
-    cameraRotationRef.current = {
-      x: camera.rotation.y,
-      y: camera.rotation.x
-    }
-    targetRotationRef.current = {
-      x: camera.rotation.y,
-      y: camera.rotation.x
-    }
-  }, [camera])
+    cameraRotationRef.current = { x: 0, y: 0 }
+    targetRotationRef.current = { x: 0, y: 0 }
+  }, [])
 
   // Animation loop for smooth camera movement
   useFrame(() => {
