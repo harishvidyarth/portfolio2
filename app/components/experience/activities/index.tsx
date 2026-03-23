@@ -145,21 +145,17 @@ const Activities = () => {
           onComplete: () => { 
             targetZ.current = 11.5;
             setTouchReady(true);
-          },
-          onUpdate: () => {
-            camera.lookAt(0, -39, 0);
           }
         });
+        gsap.to(camera.rotation, { x: 0, y: 0, z: 0, duration: 1 });
       } else {
         gsap.to(camera.position, { 
           y: -39, 
           x: 0, 
           z: 11.5, 
-          duration: 1,
-          onUpdate: () => {
-            camera.lookAt(0, -39, 0);
-          }
+          duration: 1
         });
+        gsap.to(camera.rotation, { x: 0, y: 0, z: 0, duration: 1 });
       }
     }
   }, [isActive, camera, data]);
