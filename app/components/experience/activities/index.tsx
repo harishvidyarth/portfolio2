@@ -147,7 +147,7 @@ const Activities = () => {
             setTouchReady(true);
           }
         });
-        gsap.to(camera.rotation, { x: 0, y: 0, z: 0, duration: 1 });
+        gsap.to(camera.rotation, { x: -Math.PI / 2, y: 0, z: 0, duration: 1 });
       } else {
         gsap.to(camera.position, { 
           y: -39, 
@@ -155,7 +155,7 @@ const Activities = () => {
           z: 11.5, 
           duration: 1
         });
-        gsap.to(camera.rotation, { x: 0, y: 0, z: 0, duration: 1 });
+        gsap.to(camera.rotation, { x: -Math.PI / 2, y: 0, z: 0, duration: 1 });
       }
     }
   }, [isActive, camera, data]);
@@ -213,7 +213,6 @@ const Activities = () => {
     if (!isActive) return;
 
     if (isMobile) {
-      camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, 0, 0.05);
       camera.rotation.y = THREE.MathUtils.lerp(
         camera.rotation.y,
         -(touchPointer.current.x * Math.PI) / 10,
@@ -226,7 +225,6 @@ const Activities = () => {
         delta
       );
     } else {
-      camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, 0, 0.05);
       camera.rotation.y = THREE.MathUtils.lerp(
         camera.rotation.y,
         -(state.pointer.x * Math.PI) / 10,
@@ -255,7 +253,7 @@ const Activities = () => {
 
       <group
         scale={new THREE.Vector3(1.5, 1.5, 1.5)}
-        position={isMobile ? [0, -2, 0] : [0, -4, 0]}
+        position={[0, -4, 0]}
       >
         <SpaceBoi />
       </group>
