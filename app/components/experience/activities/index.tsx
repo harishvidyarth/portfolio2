@@ -7,6 +7,7 @@ import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
+import { TouchPanControls } from "../projects/TouchPanControls";
 
 const LOTTIE_KARATE = '/lottie/karate.json';
 const LOTTIE_MUSIC = '/lottie/music.json';
@@ -195,11 +196,6 @@ const Activities = () => {
     if (!isActive) return;
 
     if (isMobile) {
-      camera.rotation.y = THREE.MathUtils.lerp(
-        camera.rotation.y,
-        -(touchPointer.current.x * Math.PI) / 10,
-        0.05
-      );
       camera.position.z = THREE.MathUtils.damp(
         camera.position.z,
         targetZ.current,
@@ -244,6 +240,7 @@ const Activities = () => {
         <>
           <GlassCard side="left" isActive={isActive} />
           <GlassCard side="right" isActive={isActive} />
+          {isMobile && <TouchPanControls />}
         </>
       )}
 
