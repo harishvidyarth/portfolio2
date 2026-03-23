@@ -140,10 +140,10 @@ const Activities = () => {
         gsap.to(camera.position, {
           y: -40,
           x: 0,
-          z: 11.5,
+          z: 9,
           duration: 1,
           onComplete: () => { 
-            targetZ.current = 11.5;
+            targetZ.current = 9;
             setTouchReady(true);
           }
         });
@@ -152,7 +152,7 @@ const Activities = () => {
         gsap.to(camera.position, { 
           y: -40, 
           x: 0, 
-          z: 11.5, 
+          z: 9, 
           duration: 1
         });
         gsap.to(camera.rotation, { x: 0, y: 0, z: 0, duration: 1 });
