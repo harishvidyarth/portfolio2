@@ -57,7 +57,7 @@ const Experience = () => {
           {getTitle()}
         </group>
 
-        {/*
+        {/* 
           MOBILE: Stack tiles vertically at x:0, y: +2, 0, -2
           DESKTOP: Side by side at x: -2.5, 0, +2.5
         */}

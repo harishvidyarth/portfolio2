@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useEffect, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
 import * as THREE from 'three';
+import { Html } from '@react-three/drei';
 
 interface GridTileProps {
   id: string;
@@ -14,6 +15,45 @@ interface GridTileProps {
   color: string;
   position: THREE.Vector3;
 }
+
+const MobileDiagonalOverlay = ({ id }: { id: string }) => {
+  const renderLines = () => {
+    if (id === 'work') {
+      return <line x1="0" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />;
+    } else if (id === 'projects') {
+      return (
+        <>
+          <line x1="0" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />
+          <line x1="100%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />
+        </>
+      );
+    } else {
+      return <line x1="100%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />;
+    }
+  };
+
+  return (
+    <Html
+      center
+      transform={false}
+      style={{
+        width: '320px',
+        height: '180px',
+        pointerEvents: 'none',
+      }}
+    >
+      <svg
+        width="320"
+        height="180"
+        viewBox="0 0 320 180"
+        style={{ position: 'absolute', top: 0, left: 0 }}
+        preserveAspectRatio="none"
+      >
+        {renderLines()}
+      </svg>
+    </Html>
+  );
+};
 
 const GridTile = (props: GridTileProps) => {
   const titleRef = useRef<THREE.Group>(null);
@@ -30,11 +70,15 @@ const GridTile = (props: GridTileProps) => {
   useEffect(() => {
     if (isMobile && titleRef.current) {
       gsap.to(titleRef.current, {
-        fontSize: 0.1,
-        maxWidth: 2.5,
+        fontSize: 0.13,
+        maxWidth: 2,
         color: '#FFF',
-        letterSpacing: 0.2,
-        fillOpacity: 1,
+        letterSpacing: 0.3,
+      });
+      gsap.to(titleRef.current.position, {
+        x: 0,
+        y: 0.6,
+        duration: 0.5,
       });
     }
   }, [id]);
@@ -151,13 +195,15 @@ const GridTile = (props: GridTileProps) => {
       {getGeometry()}
       {isMobile && <meshBasicMaterial color={color} side={THREE.DoubleSide} />}
 
+      {isMobile && <MobileDiagonalOverlay id={id} />}
+
       <group>
         <mesh position={[0, 0, -0.01]} ref={hoverBoxRef} scale={[0, 0, 0]}>
           <boxGeometry args={[4, 4, 0.5]} />
           <meshPhysicalMaterial color="#444" transparent={true} opacity={0.3} />
           <Edges color="white" lineWidth={3} />
         </mesh>
-        <Text position={isMobile ? [0, 0.6, 0.4] : [0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
+        <Text position={[0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
           {title}
         </Text>
       </group>
