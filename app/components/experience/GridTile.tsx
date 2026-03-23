@@ -166,10 +166,14 @@ const GridTile = (props: GridTileProps) => {
       return <planeGeometry args={[4, 4, 1]} />
     }
 
-    const isWork = id === 'work';
-    const points = isWork ?
-      [[-1, 2, 0], [-1, -2, 0], [3, -2, 0]] :
-      [[-3, 2, 0], [1, -2, 0], [1, 2, 0]];
+    let points: number[][];
+    if (id === 'work') {
+      points = [[-2, 1, 0], [-2, -1, 0], [2, -1, 0]];
+    } else if (id === 'projects') {
+      points = [[-2, 1, 0], [0, -1, 0], [2, 1, 0]];
+    } else {
+      points = [[-2, -1, 0], [2, -1, 0], [2, 1, 0]];
+    }
 
     return <primitive object={TriangleGeometry({ points })} attach="geometry" />
   };
