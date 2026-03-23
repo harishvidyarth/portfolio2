@@ -144,7 +144,7 @@ const Activities = () => {
           onComplete: () => { targetZ.current = 11.5; }
         });
       } else {
-        gsap.to(camera.position, { y: -39, x: 2, z: 11.5, duration: 1 });
+        gsap.to(camera.position, { y: -39, x: 0, z: 11.5, duration: 1 });
       }
     }
   }, [isActive, camera, data]);
@@ -231,7 +231,7 @@ const Activities = () => {
 
       <group
         scale={new THREE.Vector3(1.5, 1.5, 1.5)}
-        position={isMobile ? [1, -8, 0] : [0, -4, 0]}
+        position={isMobile ? [1, -12, 0] : [0, -4, 0]}
       >
         <SpaceBoi />
       </group>
