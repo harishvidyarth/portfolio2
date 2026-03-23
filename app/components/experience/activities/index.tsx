@@ -236,7 +236,7 @@ z: 11.5,
 
       <group
         scale={new THREE.Vector3(1.5, 1.5, 1.5)}
-        position={isMobile ? [0, -4, 0] : [0, -4, 0]}
+        position={isMobile ? [0, -15, 0] : [0, -4, 0]}
       >
         <SpaceBoi />
       </group>
