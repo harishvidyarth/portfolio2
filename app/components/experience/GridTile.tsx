@@ -69,15 +69,11 @@ const GridTile = (props: GridTileProps) => {
   useEffect(() => {
     if (isMobile && titleRef.current) {
       gsap.to(titleRef.current, {
-        fontSize: 0.13,
-        maxWidth: 2,
+        fontSize: 0.1,
+        maxWidth: 2.5,
         color: '#FFF',
-        letterSpacing: 0.3,
-      });
-      gsap.to(titleRef.current.position, {
-        x: 0,
-        y: 0.6,
-        duration: 0.5,
+        letterSpacing: 0.2,
+        fillOpacity: 1,
       });
     }
   }, [id]);
@@ -202,7 +198,7 @@ const GridTile = (props: GridTileProps) => {
           <meshPhysicalMaterial color="#444" transparent={true} opacity={0.3} />
           <Edges color="white" lineWidth={3} />
         </mesh>
-        <Text position={[0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
+        <Text position={isMobile ? [0, 0.6, 0.4] : [0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
           {title}
         </Text>
       </group>
