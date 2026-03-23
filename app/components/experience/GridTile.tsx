@@ -195,6 +195,7 @@ const GridTile = (props: GridTileProps) => {
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}>
       { getGeometry() }
+      {isMobile && <meshBasicMaterial color={color} side={THREE.DoubleSide} />}
       <group>
         <mesh position={[0, 0, -0.01]} ref={hoverBoxRef} scale={[0, 0, 0]}>
           <boxGeometry args={[4, 4, 0.5]}/>
