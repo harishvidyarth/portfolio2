@@ -132,6 +132,7 @@ const Activities = () => {
   const touchPointer = useRef({ x: 0, y: 0 });
   const pinchRef = useRef<number | null>(null);
   const targetZ = useRef(11.5);
+  const [touchReady, setTouchReady] = useState(false);
 
   useEffect(() => {
     if (data?.el) {
@@ -142,15 +143,24 @@ const Activities = () => {
         gsap.to(camera.position, {
           y: -39,
           x: 0,
-z: 11.5,
+          z: 11.5,
           duration: 1,
-          onComplete: () => { targetZ.current = 11.5; }
+          onComplete: () => { 
+            targetZ.current = 11.5;
+            setTouchReady(true);
+          }
         });
       } else {
         gsap.to(camera.position, { y: -39, x: 0, z: 11.5, duration: 1 });
       }
     }
   }, [isActive, camera, data]);
+
+  useEffect(() => {
+    if (!isActive) {
+      setTouchReady(false);
+    }
+  }, [isActive]);
 
   useEffect(() => {
     if (!isMobile) return;
@@ -248,7 +258,7 @@ z: 11.5,
         <>
           <GlassCard side="left" isActive={isActive} />
           <GlassCard side="right" isActive={isActive} />
-          {isMobile && <TouchPanControls />}
+          {isMobile && touchReady && <TouchPanControls />}
         </>
       )}
 
