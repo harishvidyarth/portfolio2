@@ -62,7 +62,7 @@ const Experience = () => {
             id="work"
             color='#b9c6d6'
             textAlign='left'
-            position={isMobile ? new THREE.Vector3(0, 2, 0) : new THREE.Vector3(-2.5, 0, 0)}>
+            position={isMobile ? new THREE.Vector3(-1.2, 0, 0) : new THREE.Vector3(-2.5, 0, 0)}>
             <Work/>
           </GridTile>
           <GridTile title='PROJECTS'
@@ -76,7 +76,7 @@ const Experience = () => {
             id="activities"
             color='#c4d9e8'
             textAlign='right'
-            position={isMobile ? new THREE.Vector3(0, -2, 0) : new THREE.Vector3(2.5, 0, 0)}>
+            position={isMobile ? new THREE.Vector3(1.2, 0, 0) : new THREE.Vector3(2.5, 0, 0)}>
             <Activities/>
           </GridTile>
         </group>

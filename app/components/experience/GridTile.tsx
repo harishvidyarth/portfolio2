@@ -166,10 +166,11 @@ const GridTile = (props: GridTileProps) => {
       return <planeGeometry args={[4, 4, 1]} />
     }
 
+    const scale = 0.7;
     const isWork = id === 'work';
     const points = isWork ?
-      [[-1, 2, 0], [-1, -2, 0], [3, -2, 0]] :
-      [[-3, 2, 0], [1, -2, 0], [1, 2, 0]];
+      [[-1 * scale, 2 * scale, 0], [-1 * scale, -2 * scale, 0], [3 * scale, -2 * scale, 0]] :
+      [[-3 * scale, 2 * scale, 0], [1 * scale, -2 * scale, 0], [1 * scale, 2 * scale, 0]];
 
     return <primitive object={TriangleGeometry({ points })} attach="geometry" />
   };
@@ -183,7 +184,7 @@ const GridTile = (props: GridTileProps) => {
       { getGeometry() }
       <group>
         <mesh position={[0, 0, -0.01]} ref={hoverBoxRef} scale={[0, 0, 0]}>
-          <boxGeometry args={[4, 4, 0.5]}/>
+          <boxGeometry args={[isMobile ? 2.5 : 4, isMobile ? 2.5 : 4, 0.5]}/>
           <meshPhysicalMaterial
             color="#444"
             transparent={true}
