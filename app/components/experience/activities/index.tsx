@@ -85,14 +85,19 @@ const GlassCard = ({
         <planeGeometry args={[1.35, 1.95]} />
         <meshBasicMaterial color="#050510" transparent opacity={0.5} />
       </mesh>
-      <Html position={[0, 0.35 * cardScale, 0.02]} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
+      <Html 
+        position={[0, 0.35 * cardScale, 0.02]} 
+        center 
+        zIndexRange={[10, 0]}
+        style={{ pointerEvents: 'none' }}
+      >
         <div style={{
-          width: isMobile ? '80px' : '120px',
-          height: isMobile ? '80px' : '120px',
+          width: '120px',
+          height: '120px',
+          background: 'rgba(255,0,0,0.3)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          opacity: 1,
           pointerEvents: 'none',
         }}>
           <PlayerCard src={lottieSrc} />
