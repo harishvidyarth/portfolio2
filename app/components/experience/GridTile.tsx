@@ -1,4 +1,4 @@
-import { Edges, Html, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-three/drei';
+import { Edges, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { usePortalStore } from '@stores';
 import gsap from "gsap";
@@ -14,45 +14,6 @@ interface GridTileProps {
   color: string;
   position: THREE.Vector3;
 }
-
-const MobileDiagonalOverlay = ({ id }: { id: string }) => {
-  const renderLines = () => {
-    if (id === 'work') {
-      return <line x1="0" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />;
-    } else if (id === 'projects') {
-      return (
-        <>
-          <line x1="0" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />
-          <line x1="100%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />
-        </>
-      );
-    } else {
-      return <line x1="100%" y1="0" x2="50%" y2="100%" stroke="white" strokeWidth="1.5" strokeOpacity="0.4" />;
-    }
-  };
-
-  return (
-    <Html
-      center
-      transform={false}
-      style={{
-        width: '320px',
-        height: '180px',
-        pointerEvents: 'none',
-      }}
-    >
-      <svg
-        width="320"
-        height="180"
-        viewBox="0 0 320 180"
-        style={{ position: 'absolute', top: 0, left: 0 }}
-        preserveAspectRatio="none"
-      >
-        {renderLines()}
-      </svg>
-    </Html>
-  );
-};
 
 const GridTile = (props: GridTileProps) => {
   const titleRef = useRef<THREE.Group>(null);
@@ -189,8 +150,6 @@ const GridTile = (props: GridTileProps) => {
     >
       {getGeometry()}
       {isMobile && <meshBasicMaterial color={color} side={THREE.DoubleSide} />}
-
-      {isMobile && <MobileDiagonalOverlay id={id} />}
 
       <group>
         <mesh position={[0, 0, -0.01]} ref={hoverBoxRef} scale={[0, 0, 0]}>
