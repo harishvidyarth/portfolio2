@@ -11,6 +11,7 @@ const PlayerCard = ({ src }: PlayerCardProps) => {
       src={src}
       autoplay
       loop
+      renderer="svg"
       style={{ width: '100%', height: '100%' }}
     />
   );
