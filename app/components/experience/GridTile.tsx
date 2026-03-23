@@ -2,8 +2,7 @@ import { Edges, MeshPortalMaterial, Text, TextProps, useScroll } from '@react-th
 import { useFrame, useThree } from '@react-three/fiber';
 import { usePortalStore } from '@stores';
 import gsap from "gsap";
-import { useEffect, useRef } from 'react';
-import { isMobile } from 'react-device-detect';
+import { useRef } from 'react';
 import * as THREE from 'three';
 
 interface GridTileProps {
@@ -27,24 +26,10 @@ const GridTile = (props: GridTileProps) => {
   const activePortalId = usePortalStore((state) => state.activePortalId);
   const data = useScroll();
 
-  useEffect(() => {
-    if (isMobile && titleRef.current) {
-      gsap.to(titleRef.current, {
-        fontSize: 0.1,
-        maxWidth: 2.5,
-        color: '#FFF',
-        letterSpacing: 0.2,
-        fillOpacity: 1,
-      });
-    }
-  }, [id]);
-
   useFrame(() => {
     const d = data.range(0.95, 0.05);
-    if (isMobile && titleRef.current) {
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-      (titleRef.current as any).fillOpacity = d;
-    }
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    (titleRef.current as any).fillOpacity = d;
   });
 
   const handleEscape = (e: KeyboardEvent) => {
@@ -133,13 +118,6 @@ const GridTile = (props: GridTileProps) => {
     }
   };
 
-  const getGeometry = () => {
-    if (!isMobile) {
-      return <planeGeometry args={[4, 4, 1]} />;
-    }
-    return <planeGeometry args={[3.5, 1.8, 1]} />;
-  };
-
   return (
     <mesh
       ref={gridRef}
@@ -148,8 +126,7 @@ const GridTile = (props: GridTileProps) => {
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}
     >
-      {getGeometry()}
-      {isMobile && <meshBasicMaterial color={color} side={THREE.DoubleSide} />}
+      <planeGeometry args={[4, 4, 1]} />
 
       <group>
         <mesh position={[0, 0, -0.01]} ref={hoverBoxRef} scale={[0, 0, 0]}>
@@ -157,7 +134,7 @@ const GridTile = (props: GridTileProps) => {
           <meshPhysicalMaterial color="#444" transparent={true} opacity={0.3} />
           <Edges color="white" lineWidth={3} />
         </mesh>
-        <Text position={isMobile ? [0, 0.6, 0.4] : [0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
+        <Text position={[0, -1.8, 0.4]} {...fontProps} ref={titleRef}>
           {title}
         </Text>
       </group>
