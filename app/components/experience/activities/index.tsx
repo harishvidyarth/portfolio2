@@ -7,7 +7,6 @@ import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
-import { TouchPanControls } from "../projects/TouchPanControls";
 
 const LOTTIE_KARATE = '/lottie/karate.json';
 const LOTTIE_MUSIC = '/lottie/music.json';
@@ -137,18 +136,14 @@ const Activities = () => {
     if (isActive) {
       if (isMobile) {
         gsap.to(camera.position, {
-          y: 10,
+          y: -39,
           x: 0,
-          z: 7,
+          z: 11.5,
           duration: 1,
-          onComplete: () => { targetZ.current = 7; }
-        });
-        gsap.to(camera.rotation, {
-          x: -0.3,
-          duration: 1,
+          onComplete: () => { targetZ.current = 11.5; }
         });
       } else {
-        gsap.to(camera.position, { y: 0, x: 2, z: 11.5, duration: 1 });
+        gsap.to(camera.position, { y: -39, x: 2, z: 11.5, duration: 1 });
       }
     }
   }, [isActive, camera, data]);
@@ -200,6 +195,11 @@ const Activities = () => {
     if (!isActive) return;
 
     if (isMobile) {
+      camera.rotation.y = THREE.MathUtils.lerp(
+        camera.rotation.y,
+        -(touchPointer.current.x * Math.PI) / 10,
+        0.05
+      );
       camera.position.z = THREE.MathUtils.damp(
         camera.position.z,
         targetZ.current,
@@ -235,7 +235,7 @@ const Activities = () => {
 
       <group
         scale={new THREE.Vector3(1.5, 1.5, 1.5)}
-        position={isMobile ? [0, -15, 0] : [0, -4, 0]}
+        position={isMobile ? [0, -4, 0] : [0, -4, 0]}
       >
         <SpaceBoi />
       </group>
@@ -244,7 +244,6 @@ const Activities = () => {
         <>
           <GlassCard side="left" isActive={isActive} />
           <GlassCard side="right" isActive={isActive} />
-          {isMobile && <TouchPanControls />}
         </>
       )}
 
