@@ -1,16 +1,13 @@
-import React from 'react';
-import Lottie from 'lottie-react';
-
 interface PlayerCardProps {
-  src: object;
+  src: string;
 }
 
 const PlayerCard = ({ src }: PlayerCardProps) => {
   return (
-    <Lottie
-      animationData={src}
-      loop={true}
-      style={{ width: '100%', height: '100%' }}
+    <img 
+      src={src} 
+      alt="animation"
+      style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
     />
   );
 };
