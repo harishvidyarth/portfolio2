@@ -95,18 +95,24 @@ const GlassCard = ({
         distanceFactor={1}
         style={{ pointerEvents: 'none' }}
       >
-        <img
-          src={lottieSrc}
-          alt={label}
-          style={{
-            width: isMobile ? '80px' : '110px',
-            height: isMobile ? '80px' : '110px',
-            objectFit: 'contain',
-            opacity: hovered ? 1 : 0.5,
-            transition: 'opacity 0.3s ease',
-            display: 'block',
-          }}
-        />
+        <div style={{ 
+          width: isMobile ? '80px' : '110px', 
+          height: isMobile ? '80px' : '110px',
+          background: 'red',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <img
+            src={lottieSrc}
+            alt={label}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+            }}
+          />
+        </div>
       </Html>
 
       <Text
