@@ -91,7 +91,8 @@ const GlassCard = ({
       <Html
         position={[0, isMobile ? 0.25 : 0.35, 0.02]}
         center
-        occlude={false}
+        transform
+        distanceFactor={1}
         style={{ pointerEvents: 'none' }}
       >
         <img
@@ -158,7 +159,7 @@ const Activities = () => {
         });
         gsap.to(camera.rotation, { x: -Math.PI / 2, y: 0, z: 0, duration: 1 });
       } else {
-        gsap.to(camera.position, { y: -39, x: 0, z: 11.5, duration: 1 });
+        gsap.to(camera.position, { y: -39, x: 2, z: 11.5, duration: 1 });
         gsap.to(camera.rotation, { x: -Math.PI / 2, y: 0, z: 0, duration: 1 });
       }
     }
