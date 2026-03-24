@@ -88,7 +88,6 @@ const GlassCard = ({
       <Html 
         position={[0, 0.35 * cardScale, 0.02]} 
         center 
-        transform
         zIndexRange={[10, 0]}
         style={{ pointerEvents: 'none' }}
       >
