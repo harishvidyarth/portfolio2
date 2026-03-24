@@ -95,6 +95,7 @@ const GlassCard = ({
         <div style={{
           width: '120px',
           height: '120px',
+          background: 'rgba(255,0,0,0.5)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
