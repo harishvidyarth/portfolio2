@@ -257,7 +257,7 @@ const Activities = () => {
       </mesh>
 
       <group
-        scale={new THREE.Vector3(1.5, 1.5, 1.5)}
+        scale={new THREE.Vector3(1, 1, 1)}
         position={[0, -4, 0]}
       >
         <SpaceBoi />
