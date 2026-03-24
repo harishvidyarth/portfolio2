@@ -1,15 +1,52 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Text, useScroll, Html } from "@react-three/drei";
+import { Text, useScroll } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
+import * as THREE from "three";
 import gsap from "gsap";
 import { isMobile } from "react-device-detect";
-import * as THREE from "three";
 import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
 import { TouchPanControls } from "./TouchPanControls";
 
 const LOTTIE_KARATE = '/lottie/karate.gif';
 const LOTTIE_MUSIC = '/lottie/music.gif';
+
+const GifPlane = ({ src, width, height, position }: { 
+  src: string; 
+  width: number; 
+  height: number;
+  position: [number, number, number];
+}) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useEffect(() => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      const texture = new THREE.Texture(img);
+      texture.minFilter = THREE.LinearFilter;
+      texture.needsUpdate = true;
+      if (meshRef.current) {
+        (meshRef.current.material as THREE.MeshBasicMaterial).map = texture;
+        (meshRef.current.material as THREE.MeshBasicMaterial).needsUpdate = true;
+      }
+    };
+  }, [src]);
+
+  useFrame(() => {
+    if (meshRef.current) {
+      const mat = meshRef.current.material as THREE.MeshBasicMaterial;
+      if (mat.map) mat.map.needsUpdate = true;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} position={position}>
+      <planeGeometry args={[width, height]} />
+      <meshBasicMaterial transparent />
+    </mesh>
+  );
+};
 
 const GlassCard = ({ 
   side, 
@@ -28,6 +65,7 @@ const GlassCard = ({
   const lottieSrc = side === 'left' ? LOTTIE_KARATE : LOTTIE_MUSIC;
   const cardW = isMobile ? 1.0 : 1.4;
   const cardH = isMobile ? 1.5 : 2.0;
+  const gifSize = isMobile ? 0.6 : 0.9;
 
   useEffect(() => {
     if (!isActive) {
@@ -88,32 +126,12 @@ const GlassCard = ({
         <meshBasicMaterial color="#050510" transparent opacity={0.5} />
       </mesh>
 
-      <Html
+      <GifPlane
+        src={lottieSrc}
+        width={gifSize}
+        height={gifSize}
         position={[0, isMobile ? 0.25 : 0.35, 0.02]}
-        center
-        transform
-        distanceFactor={1}
-        style={{ pointerEvents: 'none' }}
-      >
-        <div style={{ 
-          width: isMobile ? '80px' : '110px', 
-          height: isMobile ? '80px' : '110px',
-          background: 'red',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          <img
-            src={lottieSrc}
-            alt={label}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-            }}
-          />
-        </div>
-      </Html>
+      />
 
       <Text
         font="./soria-font.ttf"
