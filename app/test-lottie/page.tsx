@@ -21,20 +21,12 @@ export default function TestLottie() {
       <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>
           <h2 style={{ color: 'white', marginBottom: '10px' }}>Karate</h2>
-          <div 
-            style={{ width: '200px', height: '200px', background: 'rgba(255,255,255,0.1)', borderRadius: '10px' }}
-          >
-            <Lottie animationData={karateAnimation} loop style={{ width: '100%', height: '100%' }} />
-          </div>
+          <Lottie animationData={karateAnimation} loop />
         </div>
         
         <div style={{ textAlign: 'center' }}>
           <h2 style={{ color: 'white', marginBottom: '10px' }}>Music</h2>
-          <div 
-            style={{ width: '200px', height: '200px', background: 'rgba(255,255,255,0.1)', borderRadius: '10px' }}
-          >
-            <Lottie animationData={musicAnimation} loop style={{ width: '100%', height: '100%' }} />
-          </div>
+          <Lottie animationData={musicAnimation} loop />
         </div>
       </div>
     </div>
