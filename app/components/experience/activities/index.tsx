@@ -18,32 +18,38 @@ const GifPlane = ({ src, width, height, position }: {
   position: [number, number, number];
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
+  const [material, setMaterial] = useState<THREE.MeshBasicMaterial | null>(null);
   
   useEffect(() => {
+    const mat = new THREE.MeshBasicMaterial({ transparent: true });
+    setMaterial(mat);
+    
     const img = new Image();
     img.src = src;
+    img.crossOrigin = 'anonymous';
     img.onload = () => {
       const texture = new THREE.Texture(img);
       texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.generateMipmaps = false;
       texture.needsUpdate = true;
-      if (meshRef.current) {
-        (meshRef.current.material as THREE.MeshBasicMaterial).map = texture;
-        (meshRef.current.material as THREE.MeshBasicMaterial).needsUpdate = true;
-      }
+      mat.map = texture;
+      mat.needsUpdate = true;
     };
   }, [src]);
 
   useFrame(() => {
-    if (meshRef.current) {
-      const mat = meshRef.current.material as THREE.MeshBasicMaterial;
-      if (mat.map) mat.map.needsUpdate = true;
+    if (material?.map) {
+      material.map.needsUpdate = true;
     }
   });
+
+  if (!material) return null;
 
   return (
     <mesh ref={meshRef} position={position}>
       <planeGeometry args={[width, height]} />
-      <meshBasicMaterial transparent />
+      <primitive object={material} attach="material" />
     </mesh>
   );
 };
@@ -137,12 +143,6 @@ const GlassCard = ({ side, isActive }: GlassCardProps) => {
         height={isMobile ? 0.5 : 0.7}
         position={[0, isMobile ? 0.22 : 0.28, 0.03]}
       />
-      
-      {/* Debug - red box to check position */}
-      <mesh position={[0, isMobile ? 0.22 : 0.28, 0.035]}>
-        <planeGeometry args={[0.6, 0.6]} />
-        <meshBasicMaterial color="red" opacity={0.5} transparent />
-      </mesh>
 
       <mesh position={[0, isMobile ? -0.35 : -0.45, 0.02]}>
         <planeGeometry args={[cardW - 0.2, 0.004]} />
