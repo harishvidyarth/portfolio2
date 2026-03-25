@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Text, useScroll } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame, useThree, useLoader } from "@react-three/fiber";
 import gsap from "gsap";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
@@ -17,39 +17,22 @@ const GifPlane = ({ src, width, height, position }: {
   height: number;
   position: [number, number, number];
 }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const [material, setMaterial] = useState<THREE.MeshBasicMaterial | null>(null);
+  const texture = useLoader(THREE.TextureLoader, src);
   
   useEffect(() => {
-    const mat = new THREE.MeshBasicMaterial({ transparent: true });
-    setMaterial(mat);
-    
-    const img = new Image();
-    img.src = src;
-    img.crossOrigin = 'anonymous';
-    img.onload = () => {
-      const texture = new THREE.Texture(img);
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-      texture.generateMipmaps = false;
-      texture.needsUpdate = true;
-      mat.map = texture;
-      mat.needsUpdate = true;
-    };
-  }, [src]);
-
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    texture.generateMipmaps = false;
+  }, [texture]);
+  
   useFrame(() => {
-    if (material?.map) {
-      material.map.needsUpdate = true;
-    }
+    texture.needsUpdate = true;
   });
 
-  if (!material) return null;
-
   return (
-    <mesh ref={meshRef} position={position}>
+    <mesh position={position}>
       <planeGeometry args={[width, height]} />
-      <primitive object={material} attach="material" />
+      <meshBasicMaterial map={texture} transparent />
     </mesh>
   );
 };
