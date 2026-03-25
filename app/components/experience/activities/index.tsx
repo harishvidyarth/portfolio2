@@ -135,8 +135,14 @@ const GlassCard = ({ side, isActive }: GlassCardProps) => {
         src={side === 'left' ? LOTTIE_KARATE : LOTTIE_MUSIC}
         width={isMobile ? 0.5 : 0.7}
         height={isMobile ? 0.5 : 0.7}
-        position={[0, isMobile ? 0.22 : 0.28, 0.02]}
+        position={[0, isMobile ? 0.22 : 0.28, 0.03]}
       />
+      
+      {/* Debug - red box to check position */}
+      <mesh position={[0, isMobile ? 0.22 : 0.28, 0.035]}>
+        <planeGeometry args={[0.6, 0.6]} />
+        <meshBasicMaterial color="red" opacity={0.5} transparent />
+      </mesh>
 
       <mesh position={[0, isMobile ? -0.35 : -0.45, 0.02]}>
         <planeGeometry args={[cardW - 0.2, 0.004]} />
