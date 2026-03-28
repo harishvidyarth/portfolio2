@@ -45,7 +45,7 @@ const TimelinePoint = ({ point, diff }: { point: WorkTimelinePoint, diff: number
       </Box>
       <group>
         <group position={getPoint}>
-          <Text {...textProps} fontSize={0.3} position={[-diff / 2, 0.25, 0]}>
+          <Text {...textProps} fontSize={0.3} position={[-diff / 2, point.title.includes('Rajalakshmi') ? 0.4 : 0.25, 0]}>
             {point.year}
           </Text>
           <group position={[0, -0.5, 0]}>
