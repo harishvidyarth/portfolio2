@@ -28,9 +28,9 @@ const TimelinePoint = ({ point, diff }: { point: WorkTimelinePoint, diff: number
     color: "white",
     anchorX: textAlign,
     fillOpacity: 2 - 2 * diff,
-    outlineWidth: 0.02,
-    outlineColor: 'black',
-  }), [textAlign, diff]);
+    outlineWidth: isMobile ? undefined : 0.02,
+    outlineColor: isMobile ? undefined : 'black',
+  }), [textAlign, diff, isMobile]);
 
   const titleProps = useMemo(() => ({
     ...textProps,
@@ -38,6 +38,9 @@ const TimelinePoint = ({ point, diff }: { point: WorkTimelinePoint, diff: number
     fontSize: 0.6,
     maxWidth: 3,
   }), [textProps]);
+
+  const yearY = isMobile ? 0 : (point.title.includes('Rajalakshmi') ? 0.5 : 0.25);
+  const subtitleY = isMobile ? -0.4 - diff : (point.title.includes('Rajalakshmi') ? -1 : point.title.includes('Board') ? -0.4 : -0.6) - diff;
 
   return (
     <group position={point.point} scale={isMobile ? 0.35 : 0.6}>
@@ -47,14 +50,14 @@ const TimelinePoint = ({ point, diff }: { point: WorkTimelinePoint, diff: number
       </Box>
       <group>
         <group position={getPoint}>
-          <Text {...textProps} fontSize={0.3} position={[-diff / 2, point.title.includes('Rajalakshmi') ? 0.5 : 0.25, 0]}>
+          <Text {...textProps} fontSize={0.3} position={[-diff / 2, yearY, 0]}>
             {point.year}
           </Text>
           <group position={[0, -0.5, 0]}>
             <Text {...titleProps} fontSize={0.6} maxWidth={3} position={[0, -diff / 2, 0]}>
               {point.title}
             </Text>
-            <Text {...textProps} fontSize={0.2} position={[0, (point.title.includes('Rajalakshmi') ? -1 : point.title.includes('Board') ? -0.4 : -0.6) - diff, 0]}>
+            <Text {...textProps} fontSize={0.2} position={[0, subtitleY, 0]}>
               {point.subtitle}
             </Text>
           </group>
