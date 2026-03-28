@@ -1,14 +1,15 @@
-import React, { useRef, useEffect, useState, Suspense } from 'react';
-import { Text, useScroll, Float } from "@react-three/drei";
+import React, { useRef, useEffect, useState } from 'react';
+import { Text, useScroll, Float, Html } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
-import { KarateModel } from "../../models/KarateModel";
-import { PianoModel } from "../../models/PianoModel";
 import { TouchPanControls } from "./TouchPanControls";
+
+const LOTTIE_KARATE = '/lottie/karate.gif';
+const LOTTIE_MUSIC = '/lottie/music.gif';
 
 interface GlassCardProps {
   side: 'left' | 'right';
@@ -93,19 +94,35 @@ const GlassCard = ({ side, isActive }: GlassCardProps) => {
         <meshBasicMaterial color="#04040e" transparent opacity={0.55} />
       </mesh>
 
-      <Suspense fallback={null}>
-        <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.4}>
-          <group
-            position={[0, isMobile ? 0.22 : 0.28, 0.15]}
-            scale={isMobile ? 0.38 : 0.5}
+      <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.4}>
+        <group
+          position={[0, isMobile ? 0.22 : 0.28, 0.15]}
+          scale={isMobile ? 0.38 : 0.5}
+        >
+          <Html
+            center
+            position={[0, 0, 0]}
+            style={{
+              width: '150px',
+              height: '150px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            {side === 'left'
-              ? <KarateModel />
-              : <PianoModel />
-            }
-          </group>
-        </Float>
-      </Suspense>
+            <img
+              src={side === 'left' ? LOTTIE_KARATE : LOTTIE_MUSIC}
+              alt={label}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                borderRadius: '10px',
+              }}
+            />
+          </Html>
+        </group>
+      </Float>
 
       <mesh position={[0, isMobile ? -0.35 : -0.45, 0.02]}>
         <planeGeometry args={[cardW - 0.2, 0.004]} />
