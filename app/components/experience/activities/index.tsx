@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Text, useScroll } from "@react-three/drei";
-import { useFrame, useThree, useLoader } from "@react-three/fiber";
+import { Text, useScroll, Image } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
@@ -11,29 +11,18 @@ import { TouchPanControls } from "./TouchPanControls";
 const LOTTIE_KARATE = '/lottie/karate.gif';
 const LOTTIE_MUSIC = '/lottie/music.gif';
 
-const GifPlane = ({ src, width, height, position }: { 
+const GifImage = ({ src, scale, position }: { 
   src: string; 
-  width: number; 
-  height: number;
+  scale: number;
   position: [number, number, number];
 }) => {
-  const texture = useLoader(THREE.TextureLoader, src);
-  
-  useEffect(() => {
-    texture.minFilter = THREE.LinearFilter;
-    texture.magFilter = THREE.LinearFilter;
-    texture.generateMipmaps = false;
-  }, [texture]);
-  
-  useFrame(() => {
-    texture.needsUpdate = true;
-  });
-
   return (
-    <mesh position={position}>
-      <planeGeometry args={[width, height]} />
-      <meshBasicMaterial map={texture} transparent />
-    </mesh>
+    <Image
+      src={src}
+      scale={scale}
+      position={position}
+      transparent
+    />
   );
 };
 
@@ -120,10 +109,9 @@ const GlassCard = ({ side, isActive }: GlassCardProps) => {
         <meshBasicMaterial color="#04040e" transparent opacity={0.55} />
       </mesh>
 
-      <GifPlane
+      <GifImage
         src={side === 'left' ? LOTTIE_KARATE : LOTTIE_MUSIC}
-        width={isMobile ? 0.5 : 0.7}
-        height={isMobile ? 0.5 : 0.7}
+        scale={isMobile ? 0.5 : 0.7}
         position={[0, isMobile ? 0.22 : 0.28, 0.03]}
       />
 
