@@ -1,30 +1,14 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Text, useScroll, Image } from "@react-three/drei";
+import React, { useRef, useEffect, useState, Suspense } from 'react';
+import { Text, useScroll, Float } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import gsap from "gsap";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
+import { KarateModel } from "../../models/KarateModel";
+import { PianoModel } from "../../models/PianoModel";
 import { TouchPanControls } from "./TouchPanControls";
-
-const LOTTIE_KARATE = '/lottie/karate.gif';
-const LOTTIE_MUSIC = '/lottie/music.gif';
-
-const GifImage = ({ src, scale, position }: { 
-  src: string; 
-  scale: number;
-  position: [number, number, number];
-}) => {
-  return (
-    <Image
-      src={src}
-      scale={scale}
-      position={position}
-      transparent
-    />
-  );
-};
 
 interface GlassCardProps {
   side: 'left' | 'right';
@@ -109,11 +93,19 @@ const GlassCard = ({ side, isActive }: GlassCardProps) => {
         <meshBasicMaterial color="#04040e" transparent opacity={0.55} />
       </mesh>
 
-      <GifImage
-        src={side === 'left' ? LOTTIE_KARATE : LOTTIE_MUSIC}
-        scale={isMobile ? 0.5 : 0.7}
-        position={[0, isMobile ? 0.22 : 0.28, 0.03]}
-      />
+      <Suspense fallback={null}>
+        <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.4}>
+          <group
+            position={[0, isMobile ? 0.22 : 0.28, 0.15]}
+            scale={isMobile ? 0.38 : 0.5}
+          >
+            {side === 'left'
+              ? <KarateModel />
+              : <PianoModel />
+            }
+          </group>
+        </Float>
+      </Suspense>
 
       <mesh position={[0, isMobile ? -0.35 : -0.45, 0.02]}>
         <planeGeometry args={[cardW - 0.2, 0.004]} />
