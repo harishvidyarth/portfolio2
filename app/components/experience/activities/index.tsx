@@ -8,8 +8,8 @@ import { usePortalStore } from "@stores";
 import { SpaceBoi } from "../../models/SpaceBoi";
 import { TouchPanControls } from "./TouchPanControls";
 
-const LOTTIE_KARATE = '/lottie/karate.gif';
-const LOTTIE_MUSIC = '/lottie/music.gif';
+const LOTTIE_KARATE = '/lottie/karate.webm';
+const LOTTIE_MUSIC = '/lottie/music.webm';
 
 interface GlassCardProps {
   side: 'left' | 'right';
@@ -111,9 +111,12 @@ const GlassCard = ({ side, isActive }: GlassCardProps) => {
               justifyContent: 'center',
             }}
           >
-            <img
+            <video
               src={side === 'left' ? LOTTIE_KARATE : LOTTIE_MUSIC}
-              alt={label}
+              autoPlay
+              loop
+              muted
+              playsInline
               style={{
                 width: '100%',
                 height: '100%',
