@@ -101,7 +101,8 @@ const GlassCard = ({ side, isActive }: GlassCardProps) => {
         >
           <Html
             center
-            position={[0, 0, 0]}
+            transform
+            distanceFactor={1}
             style={{
               width: '150px',
               height: '150px',
