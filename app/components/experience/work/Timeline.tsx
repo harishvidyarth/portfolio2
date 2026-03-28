@@ -40,21 +40,21 @@ const TimelinePoint = ({ point, diff }: { point: WorkTimelinePoint, diff: number
   }), [textProps]);
 
   return (
-    <group position={point.point} scale={isMobile ? 0.35 : 0.6}>
+    <group position={point.point} scale={isMobile ? 0.25 : 0.6}>
       <Box args={[0.2, 0.2, 0.2]} position={[0, 0, -0.1]} scale={[1 - diff, 1 - diff, 1 - diff]}>
         <meshBasicMaterial color="white" wireframe />
         <Edges color="white" lineWidth={1.5} />
       </Box>
       <group>
         <group position={getPoint}>
-          <Text {...textProps} fontSize={0.3} position={[-diff / 2, point.title.includes('Rajalakshmi') ? 0.5 : 0.25, 0]}>
+          <Text {...textProps} fontSize={0.3} position={[-diff / 2, 0, 0]}>
             {point.year}
           </Text>
           <group position={[0, -0.5, 0]}>
             <Text {...titleProps} fontSize={0.6} maxWidth={3} position={[0, -diff / 2, 0]}>
               {point.title}
             </Text>
-            <Text {...textProps} fontSize={0.2} position={[0, (point.title.includes('Rajalakshmi') ? -1 : point.title.includes('Board') ? -0.4 : -0.6) - diff, 0]}>
+            <Text {...textProps} fontSize={0.2} position={[0, -0.4 - diff, 0]}>
               {point.subtitle}
             </Text>
           </group>
